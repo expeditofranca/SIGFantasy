@@ -28,7 +28,7 @@ char menu_funcionario(void) {
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                            Sis-Fantasy                                  @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                         * * * FUNCIONARIO * * *                         @@@\n");
     printf("@@@                         1 * CADASTRAR FUNCIONARIO                       @@@\n");
@@ -57,7 +57,7 @@ void cadastrar_funcionario(void) {
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@               * * *  CADASTRAR FUNCIONARIO   * * *                      @@@\n");
@@ -118,7 +118,7 @@ void pesquisar_funcionario(void){
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@                  * * *  Pesquisar Funcionario  * * *                    @@@\n");
@@ -153,7 +153,7 @@ void atualizar_funcionario(void){
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@                  * * *  Atualizar Funcionario  * * *                    @@@\n");
@@ -169,7 +169,7 @@ void excluir_funcionario(void){
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@                  * * *  Excluir Funcionario  * * *                      @@@\n");

@@ -28,7 +28,7 @@ char menu_produto(void) {
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                            Sis-Fantasy                                  @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                         * * * PRODUTO * * *                             @@@\n");
     printf("@@@                         1 * CADASTRAR PRODUTO                           @@@\n");
@@ -54,7 +54,7 @@ void cadastrar_produto(void) {
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@                 * * *  CADASTRAR PRODUTO   * * *                        @@@\n");
@@ -110,7 +110,7 @@ void atualizar_produto(void){
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@                  * * *  Atualizar Produto  * * *                        @@@\n");
@@ -125,7 +125,7 @@ void excluir_produto(void){
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@                  * * *  Excluir Produto  * * *                          @@@\n");
@@ -148,7 +148,7 @@ void pesquisar_produto(void){
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@                  * * *  Pesquisar Produto  * * *                        @@@\n");

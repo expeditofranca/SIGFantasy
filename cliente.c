@@ -47,14 +47,6 @@ char menu_cliente(void) {
 
 void cadastrar_cliente(void) {
     system("clear||cls");
-    int i = 0;
-    char id[3] = "";
-    Cliente* cliente;
-    cliente = (Cliente*) malloc(sizeof(Cliente));
-
-    FILE* fp;
-    fp = fopen("cliente.dat", "rb");
-
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
@@ -64,6 +56,20 @@ void cadastrar_cliente(void) {
     printf("@@@                    * * *  CADASTRAR CLIENTE   * * *                     @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    int i = 0;
+    char id[3] = "";
+    FILE *fp = fopen("cliente.dat", "rb");
+    if (fp == NULL) {
+        printf("Erro ao abrir cliente.dat\n");
+        return;
+    }
+
+    Cliente *cliente = (Cliente*) malloc(sizeof(Cliente));
+    if (cliente == NULL) {
+        printf("Erro ao alocar memória para cliente\n");
+        fclose(fp);
+        return;
+    }
 
     while(fread(cliente, sizeof(Cliente), 1, fp)){
         i++;
@@ -290,14 +296,18 @@ void pesquisar_cliente(void){
     
     char cpf[15];
     int i = 0;
+    FILE *fp = fopen("cliente.dat", "rb");
+    if (fp == NULL) {
+        printf("Erro ao abrir cliente.dat\n");
+        return;
+    }
+    
     Cliente* cliente;
     cliente = (Cliente*) malloc(sizeof(Cliente));
-    FILE* fp;
-    fp = fopen("cliente.dat", "rb");
-
-    
-    if(fp == NULL){
-        printf("Arquivo não encontrado!");
+    if (cliente == NULL) {
+        printf("Erro ao alocar memória para cliente\n");
+        fclose(fp);
+        return;
     }
 
     do{

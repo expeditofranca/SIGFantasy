@@ -4,13 +4,13 @@
 #include "cliente.h"
 #include "funcionario.h"
 #include "produto.h"
+#include "aluguel.h"
+#include "relatorio.h"
 
 char menu_principal(void);
-void menu_aluguel(void);
-void menu_relatorio(void);
+char menu_aluguel(void);
+char menu_relatorio(void);
 void informacoes(void);
-
-
 
 int main(void) {
     char opcao;
@@ -23,9 +23,9 @@ int main(void) {
                       break;
             case '3': modulo_produto();
                       break;
-            case '4': menu_aluguel();
+            case '4': modulo_aluguel();
                       break;
-            case '5': menu_relatorio();
+            case '5': modulo_relatorio();
                       break;
             case '6': informacoes();
                       break;
@@ -33,8 +33,6 @@ int main(void) {
     } while(opcao != '0');
     return 0;
 }
-
-
 
 char menu_principal(void) {
     system("clear||cls");
@@ -60,38 +58,6 @@ char menu_principal(void) {
     getchar(); 
     return op;
 }
-
-
-
-void menu_aluguel(void) {
-    system("clear||cls");
-    printf("\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("@@@                         * * * ALUGUEL * * *                             @@@\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
-    getchar();
-}
-
-
-
-void menu_relatorio(void) {
-    system("clear||cls");
-       printf("\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("@@@                         * * * RELATORIO * * *                           @@@\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
-    getchar();
-}
-
-
 
 void informacoes(void) {
     system("clear||cls");

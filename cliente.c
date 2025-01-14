@@ -29,7 +29,7 @@ char menu_cliente(void) {
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                            Sis-Fantasy                                  @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                         * * * CLIENTE * * *                             @@@\n");
     printf("@@@                         1 * CADASTRAR CLIENTE                           @@@\n");
@@ -56,7 +56,7 @@ void cadastrar_cliente(void) {
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@                 * * *  CADASTRAR CLIENTE   * * *                        @@@\n");
@@ -107,7 +107,7 @@ void atualizar_cliente(void){
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                      Developed By NIL and Felipe                        @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@                  * * *  Atualizar Cliente  * * *                        @@@\n");

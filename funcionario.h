@@ -9,5 +9,5 @@ typedef struct funcionario Funcionario;
 
 struct funcionario
 {
-    char cpf[15], nome[50], cargo[30], fone[19], email[50], status;
+    char cpf[15], nome[50], cargo[30], fone[19], email[50], status, id[3];
 };

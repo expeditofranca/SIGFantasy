@@ -48,11 +48,13 @@ char menu_funcionario(void) {
 
 void cadastrar_funcionario(void) {
     system("clear||cls");
+    int i = 0;
+    char id[3] = "";
     Funcionario* funcionario;
     funcionario = (Funcionario*) malloc(sizeof(Funcionario));
 
     FILE* fp;
-    fp = fopen("funcionario.dat", "ab");
+    fp = fopen("funcionario.dat", "rb");
 
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -62,6 +64,14 @@ void cadastrar_funcionario(void) {
     printf("@@@                                                                         @@@\n");
     printf("@@@               * * *  CADASTRAR FUNCIONARIO   * * *                      @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+
+    while(fread(funcionario, sizeof(Funcionario), 1, fp)){
+        printf("0");
+        i++;
+    }
+    fclose(fp);
+
+    fp = fopen("cliente.dat", "ab");
 
     do{
         printf("\nDigite o CPF do Funcionario: ");
@@ -94,6 +104,8 @@ void cadastrar_funcionario(void) {
     }while(verificaremail(funcionario->email));
 
     funcionario->status = '1';
+    sprintf(id, "%d", i + 1);
+    strcpy(funcionario->id, id);
 
     fwrite(funcionario, sizeof(Funcionario), 1, fp);
     fclose(fp);
@@ -137,6 +149,7 @@ void pesquisar_funcionario(void){
             printf("E-mail: %s\n", funcionario->email);
             printf("Telefone: %s\n", funcionario->fone);
             printf("Status: %c\n", funcionario->status);
+            printf("Id: %s\n", funcionario->id);
         }
     }
     

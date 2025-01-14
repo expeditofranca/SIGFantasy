@@ -9,5 +9,5 @@ typedef struct cliente Cliente;
 
 struct cliente
 {
-    char cpf[15], nome[50], fone[19], email[50], endereco[100], status;
+    char cpf[15], nome[50], fone[19], email[50], endereco[100], status, id[3];
 };

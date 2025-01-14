@@ -62,7 +62,7 @@ void cadastrar_produto(void) {
 
     do{
         printf("\nDigite o ID do Produto (apenas numeros): ");
-        fgets(produto->id, 10, stdin);
+        fgets(produto->id, 3, stdin);
         produto->id[strcspn(produto->id, "\n")] = '\0'; 
     }while((!verificarnumero(produto->id)));
 
@@ -168,6 +168,7 @@ void pesquisar_produto(void){
             printf("Preço: %.2f\n", produto->preco);
             printf("Quantidade: %d\n", produto->quantidade);
             printf("Status: %c\n", produto->status);
+            printf("Id: %s\n", produto->id);
         }
     }
     

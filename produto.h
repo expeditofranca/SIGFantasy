@@ -9,7 +9,7 @@ typedef struct produto Produto;
 
 struct produto
 {
-    char id[10], nome[50], tipo[10], status;
+    char id[3], nome[50], tipo[10], status;
     float preco;
     int quantidade;
 };

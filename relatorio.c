@@ -67,6 +67,7 @@ void relatorio_cliente(void){
     printf("Telefone: %s\n", cliente->fone);
     printf("E-mail: %s\n", cliente->email);
     printf("Status: %c\n", cliente->status);
+    printf("Id: %s\n", cliente->id);
   }
   free(cliente);
 
@@ -93,6 +94,7 @@ void relatorio_funcionario(void){
     printf("Telefone: %s\n", funcionario->fone);
     printf("E-mail: %s\n", funcionario->email);
     printf("Status: %c\n", funcionario->status);
+    printf("Id: %s\n", funcionario->id);
   }
 
   printf("\n");
@@ -100,7 +102,7 @@ void relatorio_funcionario(void){
   getchar();
 }
 
-void tela_relatorio_produto(void){
+void relatorio_produto(void){
   FILE *fp;
   Produto* produto;
   fp = fopen("produto.dat", "rb");
@@ -117,8 +119,8 @@ void tela_relatorio_produto(void){
     printf("Tipo: %s\n", produto->tipo);
     printf("Preço: %f\n", produto->preco);
     printf("Estoque: %d\n", produto->quantidade);
-    printf("Id: %s\n", produto->id);
     printf("Status: %c\n", produto->status);
+    printf("Id: %s\n", produto->id);
   }
 
   printf("\n");

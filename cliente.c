@@ -47,11 +47,13 @@ char menu_cliente(void) {
 
 void cadastrar_cliente(void) {
     system("clear||cls");
+    int i = 0;
+    char id[3] = "";
     Cliente* cliente;
     cliente = (Cliente*) malloc(sizeof(Cliente));
 
     FILE* fp;
-    fp = fopen("cliente.dat", "ab");
+    fp = fopen("cliente.dat", "rb");
 
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -59,9 +61,16 @@ void cadastrar_cliente(void) {
     printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
-    printf("@@@                 * * *  CADASTRAR CLIENTE   * * *                        @@@\n");
+    printf("@@@                    * * *  CADASTRAR CLIENTE   * * *                     @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+
+    while(fread(cliente, sizeof(Cliente), 1, fp)){
+        i++;
+    }
+    fclose(fp);
+
+    fp = fopen("cliente.dat", "ab");
 
     do{
         printf("\nDigite o CPF : ");
@@ -92,6 +101,8 @@ void cadastrar_cliente(void) {
     cliente->endereco[strcspn(cliente->endereco, "\n")] = '\0';
 
     cliente->status = '1';
+    sprintf(id, "%d", i + 1);
+    strcpy(cliente->id, id);
 
     fwrite(cliente, sizeof(Cliente), 1, fp);
     fclose(fp);
@@ -102,7 +113,7 @@ void cadastrar_cliente(void) {
     getchar();
 }
 
-void atualizar_cliente(void){
+void atualizar_cliente(void) {
     system("clear||cls");
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -110,26 +121,90 @@ void atualizar_cliente(void){
     printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
-    printf("@@@                  * * *  Atualizar Cliente  * * *                        @@@\n");
+    printf("@@@                     * * *  Atualizar Cliente  * * *                     @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("@@@                         Em Desenvolvilmento                             @@@\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+
+    char cpf[15];
+    FILE *fp = fopen("cliente.dat", "rb");
+    if (fp == NULL) {
+        printf("Erro ao abrir cliente.dat\n");
+        return;
+    }
+
+    FILE *f = fopen("temp.dat", "wb");
+    if (f == NULL) {
+        printf("Erro ao criar temp.dat\n");
+        fclose(fp);
+        return;
+    }
+
+    Cliente *cliente = (Cliente*) malloc(sizeof(Cliente));
+    if (cliente == NULL) {
+        printf("Erro ao alocar memória para cliente\n");
+        fclose(fp);
+        fclose(f);
+        return;
+    }
+
+    do {
+        printf("\nDigite o CPF: ");
+        fgets(cpf, 15, stdin);
+        cpf[strcspn(cpf, "\n")] = '\0';
+    } while (!verificarCPF(cpf));
+
+    while (fread(cliente, sizeof(Cliente), 1, fp) == 1) {
+        if (strcmp(cliente->cpf, cpf) != 0) {
+            fwrite(cliente, sizeof(Cliente), 1, f);
+        } else {
+            char op;
+            printf("O que deseja alterar? \n1 - Nome\n2 - Telefone\n3 - E-mail\n4 - Endereço\n");
+            scanf("%c", &op);
+            getchar();
+
+            switch (op) {
+                case '1':
+                    printf("\nDigite o novo Nome: ");
+                    fgets(cliente->nome, 50, stdin);
+                    cliente->nome[strcspn(cliente->nome, "\n")] = '\0';
+                    break;
+                case '2':
+                    printf("\nDigite o novo Telefone: ");
+                    fgets(cliente->fone, 15, stdin);
+                    cliente->fone[strcspn(cliente->fone, "\n")] = '\0';
+                    break;
+                case '3':
+                    printf("\nDigite o novo Email: ");
+                    fgets(cliente->email, 50, stdin);
+                    cliente->email[strcspn(cliente->email, "\n")] = '\0';
+                    break;
+                case '4':
+                    printf("\nDigite o novo Endereço: ");
+                    fgets(cliente->endereco, 100, stdin);
+                    cliente->endereco[strcspn(cliente->endereco, "\n")] = '\0';
+                    break;
+                default:
+                    printf("Opção inválida!\n");
+                    break;
+            }
+
+            fwrite(cliente, sizeof(Cliente), 1, f);
+        }
+    }
+
+    free(cliente);
+    fclose(fp);
+    fclose(f);
+    remove("cliente.dat");
+    rename("temp.dat", "cliente.dat");
+
+    printf("\nAtualização concluída!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
 }
 
-void excluir_cliente(void){ 
+void excluir_cliente(void) { 
     system("clear||cls");
-    char* cpf = (char*) malloc(15*sizeof(char));
-    char op;
-    FILE* fp;
-    fp = fopen("cliente.dat", "rb");
-    FILE* f;
-    f = fopen("temp.dat", "ab");
-    Cliente* cliente;
-    cliente = (Cliente*) malloc(sizeof(Cliente));
-
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
@@ -139,35 +214,51 @@ void excluir_cliente(void){
     printf("@@@                    * * *  Excluir Cliente  * * *                        @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    
-    if(fp == NULL || f == NULL){
-        printf("Arquivo não encontrado!");
+
+    char cpf[15];
+    FILE *fp = fopen("cliente.dat", "rb");
+    if (fp == NULL) {
+        printf("Erro ao abrir cliente.dat\n");
+        return;
     }
 
-    do{
-        printf("1 - Excluir permanentemente\n2 - Desativar o status ON do registro:\n");
-        scanf("%s", &op);
-        getchar();
-    }while(!verificarnumero(&op));
+    FILE *f = fopen("temp.dat", "wb");
+    if (f == NULL) {
+        printf("Erro ao criar temp.dat\n");
+        fclose(fp);
+        return;
+    }
 
-    // do{
-        printf("\nDigite o CPF : ");
-        scanf("%s", cpf);
-        printf("A");
-        // fgets(cpf, 15, stdin);
-        // cpf[strcspn(cpf, "\n")] = '\0';
-    // }while(!verificarCPF(cpf));
-    
-    if(op == '1'){
-        while(fread(cliente, sizeof(Cliente), 1, fp)){
-            printf("B");
-            if(strcmp(cliente->cpf, cpf) != 0){
+    Cliente *cliente = (Cliente*) malloc(sizeof(Cliente));
+    if (cliente == NULL) {
+        printf("Erro ao alocar memória para cliente\n");
+        fclose(fp);
+        fclose(f);
+        return;
+    }
+
+    char op;
+    do {
+        printf("1 - Excluir permanentemente\n2 - Desativar o status ON do registro:\n");
+        scanf("%c", &op);
+        getchar();
+    } while (op != '1' && op != '2');
+
+    do {
+        printf("\nDigite o CPF: ");
+        fgets(cpf, 15, stdin);
+        cpf[strcspn(cpf, "\n")] = '\0';
+    } while (!verificarCPF(cpf));
+
+    if (op == '1') {
+        while (fread(cliente, sizeof(Cliente), 1, fp) == 1) {
+            if (strcmp(cliente->cpf, cpf) != 0) {
                 fwrite(cliente, sizeof(Cliente), 1, f);
             }
         }
     } else {
-        while(fread(cliente, sizeof(Cliente), 1, fp)){
-            if(strcmp(cliente->cpf, cpf) == 0){
+        while (fread(cliente, sizeof(Cliente), 1, fp) == 1) {
+            if (strcmp(cliente->cpf, cpf) == 0) {
                 cliente->status = '0';
             }
             fwrite(cliente, sizeof(Cliente), 1, f);
@@ -177,32 +268,33 @@ void excluir_cliente(void){
     fclose(fp);
     fclose(f);
     free(cliente);
-    free(cpf);
     remove("cliente.dat");
     rename("temp.dat", "cliente.dat");
-    
+
+    printf("\nExclusão concluída!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
-}   
+}
 
 void pesquisar_cliente(void){
     system("clear||cls");
-    char* cpf;
-    cpf = (char*) malloc(15*sizeof(char));
-    Cliente* cliente;
-    cliente = (Cliente*) malloc(sizeof(Cliente));
-    FILE* fp;
-    fp = fopen("cliente.dat", "rb");
-
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                             Sis-Fantasy                                 @@@\n");
     printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
-    printf("@@@                  * * *  Pesquisar Cliente  * * *                        @@@\n");
+    printf("@@@                     * * *  Pesquisar Cliente  * * *                     @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    
+    char cpf[15];
+    int i = 0;
+    Cliente* cliente;
+    cliente = (Cliente*) malloc(sizeof(Cliente));
+    FILE* fp;
+    fp = fopen("cliente.dat", "rb");
+
     
     if(fp == NULL){
         printf("Arquivo não encontrado!");
@@ -222,13 +314,19 @@ void pesquisar_cliente(void){
             printf("Endereço: %s\n", cliente->endereco);
             printf("Telefone: %s\n", cliente->fone);
             printf("Status: %c\n", cliente->status);
+            printf("Id: %s\n", cliente->id);
+            i = i + 1;
         }
+    }
+
+    if(i == 0){
+        printf("Cliente não encontrado!");
     }
     
     fclose(fp);
     free(cliente);
-    free(cpf);
 
+    printf("\nPesquisa concluída!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
 }

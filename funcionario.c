@@ -231,24 +231,32 @@ void atualizar_funcionario(void){
 
             switch (op) {
                 case '1':
-                    printf("\nDigite o novo Nome: ");
-                    fgets(funcionario->nome, 50, stdin);
-                    funcionario->nome[strcspn(funcionario->nome, "\n")] = '\0';
+                    do{
+                        printf("\nDigite o novo Nome: ");
+                        fgets(funcionario->nome, 50, stdin);
+                        funcionario->nome[strcspn(funcionario->nome, "\n")] = '\0';
+                    }while(!verificarnome(funcionario->nome));
                     break;
                 case '2':
-                    printf("\nDigite o novo Telefone: ");
-                    fgets(funcionario->fone, 15, stdin);
-                    funcionario->fone[strcspn(funcionario->fone, "\n")] = '\0';
+                    do{
+                        printf("\nDigite o novo Telefone: ");
+                        fgets(funcionario->fone, 15, stdin);
+                        funcionario->fone[strcspn(funcionario->fone, "\n")] = '\0';
+                    }while(!verificarfone(funcionario->fone));
                     break;
                 case '3':
-                    printf("\nDigite o novo Email: ");
-                    fgets(funcionario->email, 50, stdin);
-                    funcionario->email[strcspn(funcionario->email, "\n")] = '\0';
+                    do{
+                        printf("\nDigite o novo Email: ");
+                        fgets(funcionario->email, 50, stdin);
+                        funcionario->email[strcspn(funcionario->email, "\n")] = '\0';
+                    }while(!verificaremail(funcionario->email));
                     break;
                 case '4':
-                    printf("\nDigite o novo Cargo: ");
-                    fgets(funcionario->cargo, 30, stdin);
-                    funcionario->cargo[strcspn(funcionario->cargo, "\n")] = '\0';
+                    do{
+                        printf("\nDigite o novo Cargo: ");
+                        fgets(funcionario->cargo, 30, stdin);
+                        funcionario->cargo[strcspn(funcionario->cargo, "\n")] = '\0';
+                    }while(!verificarnome(funcionario->cargo));
                     break;
                 default:
                     printf("Opção inválida!\n");

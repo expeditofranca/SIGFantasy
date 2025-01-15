@@ -170,19 +170,25 @@ void atualizar_cliente(void) {
 
             switch (op) {
                 case '1':
-                    printf("\nDigite o novo Nome: ");
-                    fgets(cliente->nome, 50, stdin);
-                    cliente->nome[strcspn(cliente->nome, "\n")] = '\0';
+                    do{
+                        printf("\nDigite o novo Nome: ");
+                        fgets(cliente->nome, 50, stdin);
+                        cliente->nome[strcspn(cliente->nome, "\n")] = '\0';
+                    }while(!verificarnome(cliente->nome));
                     break;
                 case '2':
-                    printf("\nDigite o novo Telefone: ");
-                    fgets(cliente->fone, 15, stdin);
-                    cliente->fone[strcspn(cliente->fone, "\n")] = '\0';
+                    do{
+                        printf("\nDigite o novo Telefone: ");
+                        fgets(cliente->fone, 15, stdin);
+                        cliente->fone[strcspn(cliente->fone, "\n")] = '\0';
+                    }while (!verificarfone(cliente->fone));
                     break;
                 case '3':
-                    printf("\nDigite o novo Email: ");
-                    fgets(cliente->email, 50, stdin);
-                    cliente->email[strcspn(cliente->email, "\n")] = '\0';
+                    do{
+                        printf("\nDigite o novo Email: ");
+                        fgets(cliente->email, 50, stdin);
+                        cliente->email[strcspn(cliente->email, "\n")] = '\0';
+                    }while(!verificaremail(cliente->email));
                     break;
                 case '4':
                     printf("\nDigite o novo Endereço: ");
@@ -301,7 +307,7 @@ void pesquisar_cliente(void){
         printf("Erro ao abrir cliente.dat\n");
         return;
     }
-    
+
     Cliente* cliente;
     cliente = (Cliente*) malloc(sizeof(Cliente));
     if (cliente == NULL) {

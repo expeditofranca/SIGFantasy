@@ -12,12 +12,15 @@ char modulo_funcionario(void) {
         switch(opcao_f) {
             case '1': cadastrar_funcionario();
                       break;
-            case '2': atualizar_funcionario();
+            case '2': pesquisar_funcionario();
                       break;
-            case '3': excluir_funcionario();
+            case '3': atualizar_funcionario();
                       break;
-            case '4': pesquisar_funcionario();
+            case '4': excluir_funcionario();
                       break;
+            default:
+                    printf("Opção inválida!\n");
+                    break;
         }
     } while(opcao_f != '0');
     return 0;
@@ -32,9 +35,9 @@ char menu_funcionario(void) {
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                         * * * FUNCIONARIO * * *                         @@@\n");
     printf("@@@                         1 * CADASTRAR FUNCIONARIO                       @@@\n");
-    printf("@@@                         2 * ATUALIZAR FUNCIONARIO                       @@@\n");
-    printf("@@@                         3 * EXCLUIR FUNCIONARIO                         @@@\n");
-    printf("@@@                         4 * PESQUISAR FUNCIONARIO                       @@@\n");
+    printf("@@@                         2 * PESQUISAR FUNCIONARIO                       @@@\n");
+    printf("@@@                         3 * ATUALIZAR FUNCIONARIO                       @@@\n");
+    printf("@@@                         4 * EXCLUIR FUNCIONARIO                         @@@\n");
     printf("@@@                         0 * VOLTAR                                      @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("\n");
@@ -71,7 +74,7 @@ void cadastrar_funcionario(void) {
         return;
     }
 
-    while(fread(funcionario, sizeof(Funcionario), 1, fp)){
+    while(fread(funcionario, sizeof(Funcionario), 1, fp) == 1 ){
         printf("0");
         i++;
     }
@@ -155,7 +158,7 @@ void pesquisar_funcionario(void){
         cpf[strcspn(cpf, "\n")] = '\0'; 
     }while(!verificarCPF(cpf));
 
-    while(fread(funcionario, sizeof(Funcionario), 1, fp)) {
+    while(fread(funcionario, sizeof(Funcionario), 1, fp) == 1) {
         if ((strcmp(funcionario->cpf, cpf) == 0)){
             printf("CPF: %s\n", funcionario->cpf);
             printf("Nome: %s\n", funcionario->nome);

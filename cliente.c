@@ -12,12 +12,15 @@ char modulo_cliente(void) {
         switch(opcao_c) {
             case '1': cadastrar_cliente();
                       break;
-            case '2': atualizar_cliente();
+            case '2': pesquisar_cliente();
                       break;
-            case '3': excluir_cliente();
+            case '3': atualizar_cliente();
                       break;
-            case '4': pesquisar_cliente();
+            case '4': excluir_cliente();
                       break;
+            default:
+                    printf("Opção inválida!\n");
+                    break;
         }
     } while(opcao_c != '0');
     return 0;
@@ -33,9 +36,9 @@ char menu_cliente(void) {
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                         * * * CLIENTE * * *                             @@@\n");
     printf("@@@                         1 * CADASTRAR CLIENTE                           @@@\n");
-    printf("@@@                         2 * ATUALIZAR CLIENTE                           @@@\n");
-    printf("@@@                         3 * EXCLUIR CLIENTE                             @@@\n");
-    printf("@@@                         4 * PESQUISAR CLIENTE                           @@@\n");
+    printf("@@@                         2 * PESQUISAR CLIENTE                           @@@\n");
+    printf("@@@                         3 * ATUALIZAR CLIENTE                           @@@\n");
+    printf("@@@                         4 * EXCLUIR CLIENTE                             @@@\n");
     printf("@@@                         0 * VOLTAR                                      @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("\n");
@@ -71,7 +74,7 @@ void cadastrar_cliente(void) {
         return;
     }
 
-    while(fread(cliente, sizeof(Cliente), 1, fp)){
+    while(fread(cliente, sizeof(Cliente), 1, fp) == 1){
         i++;
     }
     fclose(fp);
@@ -115,6 +118,65 @@ void cadastrar_cliente(void) {
     free(cliente);
 
     printf("\nCliente cadastrado com sucesso!\n");
+    printf(">>> Tecle <ENTER> para continuar...\n");
+    getchar();
+}
+
+void pesquisar_cliente(void){
+    system("clear||cls");
+    printf("\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@                             Sis-Fantasy                                 @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@                                                                         @@@\n");
+    printf("@@@                     * * *  Pesquisar Cliente  * * *                     @@@\n");
+    printf("@@@                                                                         @@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    
+    char cpf[15];
+    int i = 0;
+    FILE *fp = fopen("cliente.dat", "rb");
+    if (fp == NULL) {
+        printf("Erro ao abrir cliente.dat\n");
+        return;
+    }
+
+    Cliente* cliente;
+    cliente = (Cliente*) malloc(sizeof(Cliente));
+    if (cliente == NULL) {
+        printf("Erro ao alocar memória para cliente\n");
+        fclose(fp);
+        return;
+    }
+
+    do{
+        printf("\nDigite o CPF : ");
+        fgets(cpf, 15, stdin);
+        cpf[strcspn(cpf, "\n")] = '\0'; 
+    }while(!verificarCPF(cpf));
+
+    while(fread(cliente, sizeof(Cliente), 1, fp) == 1) {
+        if ((strcmp(cliente->cpf, cpf) == 0)){
+            printf("CPF: %s\n", cliente->cpf);
+            printf("Nome: %s\n", cliente->nome);
+            printf("E-mail: %s\n", cliente->email);
+            printf("Endereço: %s\n", cliente->endereco);
+            printf("Telefone: %s\n", cliente->fone);
+            printf("Status: %c\n", cliente->status);
+            printf("Id: %s\n", cliente->id);
+            i = i + 1;
+        }
+    }
+
+    if(i == 0){
+        printf("Cliente não encontrado!");
+    }
+    
+    fclose(fp);
+    free(cliente);
+
+    printf("\nPesquisa concluída!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
 }
@@ -284,65 +346,6 @@ void excluir_cliente(void) {
     rename("temp.dat", "cliente.dat");
 
     printf("\nExclusão concluída!\n");
-    printf(">>> Tecle <ENTER> para continuar...\n");
-    getchar();
-}
-
-void pesquisar_cliente(void){
-    system("clear||cls");
-    printf("\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("@@@                             Sis-Fantasy                                 @@@\n");
-    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("@@@                                                                         @@@\n");
-    printf("@@@                     * * *  Pesquisar Cliente  * * *                     @@@\n");
-    printf("@@@                                                                         @@@\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    
-    char cpf[15];
-    int i = 0;
-    FILE *fp = fopen("cliente.dat", "rb");
-    if (fp == NULL) {
-        printf("Erro ao abrir cliente.dat\n");
-        return;
-    }
-
-    Cliente* cliente;
-    cliente = (Cliente*) malloc(sizeof(Cliente));
-    if (cliente == NULL) {
-        printf("Erro ao alocar memória para cliente\n");
-        fclose(fp);
-        return;
-    }
-
-    do{
-        printf("\nDigite o CPF : ");
-        fgets(cpf, 15, stdin);
-        cpf[strcspn(cpf, "\n")] = '\0'; 
-    }while(!verificarCPF(cpf));
-
-    while(fread(cliente, sizeof(Cliente), 1, fp)) {
-        if ((strcmp(cliente->cpf, cpf) == 0)){
-            printf("CPF: %s\n", cliente->cpf);
-            printf("Nome: %s\n", cliente->nome);
-            printf("E-mail: %s\n", cliente->email);
-            printf("Endereço: %s\n", cliente->endereco);
-            printf("Telefone: %s\n", cliente->fone);
-            printf("Status: %c\n", cliente->status);
-            printf("Id: %s\n", cliente->id);
-            i = i + 1;
-        }
-    }
-
-    if(i == 0){
-        printf("Cliente não encontrado!");
-    }
-    
-    fclose(fp);
-    free(cliente);
-
-    printf("\nPesquisa concluída!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
 }

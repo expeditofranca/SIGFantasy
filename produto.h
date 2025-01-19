@@ -1,8 +1,8 @@
 char modulo_produto(void);
 char menu_produto(void);
 void cadastrar_produto(void);
-void atualizar_produto(void);
 void pesquisar_produto(void);
+void atualizar_produto(void);
 void excluir_produto(void);
 
 typedef struct produto Produto;

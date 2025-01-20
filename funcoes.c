@@ -137,3 +137,16 @@ int verificaremail(char* email){
     }return 1;
 
 }
+
+char* lelinha(void) {
+  char linha[255];
+  scanf(" %26[^\n]", linha);
+  return duplica(linha);
+}
+
+char* duplica(char* s) {
+  int n = strlen(s) + 1;
+  char* d = (char*) malloc(n*sizeof(char));
+  strcpy(d, s);
+  return d;
+}

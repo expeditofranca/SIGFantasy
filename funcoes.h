@@ -4,3 +4,5 @@ int verificarfone(char*);
 int verificaremail(char*);
 int verificarnumero(char*);
 int verificarpreco(char*);
+char* duplica(char*);
+char* lelinha(void);

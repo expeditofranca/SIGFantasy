@@ -16,8 +16,8 @@ char modulo_cliente(void) {
             case '2': Cliente* cliente = pesquisar_cliente(lista);
                       exibe_cliente(cliente);
                       break;
-            // case '3': atualizar_cliente(lista);
-            //           break;
+            case '3': lista = atualizar_cliente(lista);
+                      break;
             // case '4': lista = excluir_cliente(lista);
             //           break;
             // case '5': exibe_lista(lista);
@@ -235,101 +235,102 @@ Cliente* pesquisar_cliente(Cliente* lista){
     return NULL;
 }
 
-// void atualizar_cliente(void) {
-//     system("clear||cls");
-//     printf("\n");
-//     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-//     printf("@@@                             Sis-Fantasy                                 @@@\n");
-//     printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
-//     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-//     printf("@@@                                                                         @@@\n");
-//     printf("@@@                     * * *  Atualizar Cliente  * * *                     @@@\n");
-//     printf("@@@                                                                         @@@\n");
-//     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+Cliente* atualizar_cliente(Cliente* lista) {
+    system("clear||cls");
+    printf("\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@                             Sis-Fantasy                                 @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@                                                                         @@@\n");
+    printf("@@@                     * * *  Atualizar Cliente  * * *                     @@@\n");
+    printf("@@@                                                                         @@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 
-//     char cpf[15];
-//     FILE *fp = fopen("cliente.dat", "rb");
-//     if (fp == NULL) {
-//         printf("Erro ao abrir cliente.dat\n");
-//         return;
-//     }
+    char cpf[15];
+    FILE *fp = fopen("cliente.dat", "rb");
+    if (fp == NULL) {
+        printf("Erro ao abrir cliente.dat\n");
+        return lista;
+    }
 
-//     FILE *f = fopen("temp.dat", "wb");
-//     if (f == NULL) {
-//         printf("Erro ao criar temp.dat\n");
-//         fclose(fp);
-//         return;
-//     }
+    FILE *f = fopen("temp.dat", "wb");
+    if (f == NULL) {
+        printf("Erro ao criar temp.dat\n");
+        fclose(fp);
+        return lista;
+    }
 
-//     Cliente *cliente = (Cliente*) malloc(sizeof(Cliente));
-//     if (cliente == NULL) {
-//         printf("Erro ao alocar memória para cliente\n");
-//         fclose(fp);
-//         fclose(f);
-//         return;
-//     }
+    Cliente *cliente = (Cliente*) malloc(sizeof(Cliente));
+    if (cliente == NULL) {
+        printf("Erro ao alocar memória para cliente!\n");
+        fclose(fp);
+        fclose(f);
+        return lista;
+    }
 
-//     do {
-//         printf("\nDigite o CPF: ");
-//         fgets(cpf, 15, stdin);
-//         cpf[strcspn(cpf, "\n")] = '\0';
-//     } while (!verificarCPF(cpf));
+    do {
+        printf("\nDigite o CPF: ");
+        fgets(cpf, 15, stdin);
+        cpf[strcspn(cpf, "\n")] = '\0';
+    } while (!verificarCPF(cpf));
 
-//     while (fread(cliente, sizeof(Cliente), 1, fp) == 1) {
-//         if (strcmp(cliente->cpf, cpf) != 0) {
-//             fwrite(cliente, sizeof(Cliente), 1, f);
-//         } else {
-//             char op;
-//             printf("O que deseja alterar? \n1 - Nome\n2 - Telefone\n3 - E-mail\n4 - Endereço\n");
-//             scanf("%c", &op);
-//             getchar();
+    while (fread(cliente, sizeof(Cliente), 1, fp) == 1) {
+        if (strcmp(cliente->cpf, cpf) != 0) {
+            fwrite(cliente, sizeof(Cliente), 1, f);
+        } else {
+            char op;
+            printf("O que deseja alterar? \n1 - Nome\n2 - Telefone\n3 - E-mail\n4 - Endereço\n");
+            scanf("%c", &op);
+            getchar();
 
-//             switch (op) {
-//                 case '1':
-//                     do{
-//                         printf("\nDigite o novo Nome: ");
-//                         fgets(cliente->nome, 50, stdin);
-//                         cliente->nome[strcspn(cliente->nome, "\n")] = '\0';
-//                     }while(!verificarnome(cliente->nome));
-//                     break;
-//                 case '2':
-//                     do{
-//                         printf("\nDigite o novo Telefone: ");
-//                         fgets(cliente->fone, 15, stdin);
-//                         cliente->fone[strcspn(cliente->fone, "\n")] = '\0';
-//                     }while (!verificarfone(cliente->fone));
-//                     break;
-//                 case '3':
-//                     do{
-//                         printf("\nDigite o novo Email: ");
-//                         fgets(cliente->email, 50, stdin);
-//                         cliente->email[strcspn(cliente->email, "\n")] = '\0';
-//                     }while(!verificaremail(cliente->email));
-//                     break;
-//                 case '4':
-//                     printf("\nDigite o novo Endereço: ");
-//                     fgets(cliente->endereco, 100, stdin);
-//                     cliente->endereco[strcspn(cliente->endereco, "\n")] = '\0';
-//                     break;
-//                 default:
-//                     printf("Opção inválida!\n");
-//                     break;
-//             }
+            switch (op) {
+                case '1':
+                    do{
+                        printf("\nDigite o novo Nome: ");
+                        fgets(cliente->nome, 50, stdin);
+                        cliente->nome[strcspn(cliente->nome, "\n")] = '\0';
+                    }while(!verificarnome(cliente->nome));
+                    break;
+                case '2':
+                    do{
+                        printf("\nDigite o novo Telefone: ");
+                        fgets(cliente->fone, 15, stdin);
+                        cliente->fone[strcspn(cliente->fone, "\n")] = '\0';
+                    }while (!verificarfone(cliente->fone));
+                    break;
+                case '3':
+                    do{
+                        printf("\nDigite o novo Email: ");
+                        fgets(cliente->email, 50, stdin);
+                        cliente->email[strcspn(cliente->email, "\n")] = '\0';
+                    }while(!verificaremail(cliente->email));
+                    break;
+                case '4':
+                    printf("\nDigite o novo Endereço: ");
+                    fgets(cliente->endereco, 100, stdin);
+                    cliente->endereco[strcspn(cliente->endereco, "\n")] = '\0';
+                    break;
+                default:
+                    printf("Opção inválida!\n");
+                    break;
+            }
+            fwrite(cliente, sizeof(Cliente), 1, f);
+        }
+    }
 
-//             fwrite(cliente, sizeof(Cliente), 1, f);
-//         }
-//     }
+    free(cliente);
+    fclose(fp);
+    fclose(f);
+    remove("cliente.dat");
+    rename("temp.dat", "cliente.dat");
 
-//     free(cliente);
-//     fclose(fp);
-//     fclose(f);
-//     remove("cliente.dat");
-//     rename("temp.dat", "cliente.dat");
+    printf("\nAtualização concluída!\n");
+    printf(">>> Tecle <ENTER> para continuar...\n");
+    getchar();
 
-//     printf("\nAtualização concluída!\n");
-//     printf(">>> Tecle <ENTER> para continuar...\n");
-//     getchar();
-// }
+    return carregar_clientes("cliente.dat");
+}
 
 // void excluir_cliente(void) { 
 //     system("clear||cls");

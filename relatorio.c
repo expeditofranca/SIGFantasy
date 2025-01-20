@@ -242,21 +242,81 @@ void relatorio_produto(void){
   fp = fopen("produto.dat", "rb");
   produto = (Produto*) malloc(sizeof(Produto));
 
-  printf("///////////////////////////////////////////////////////////////////////////////\n");
-  printf("///                                                                         ///\n");
-  printf("///               - - - - Relatório Geral de Produtos - - - -               ///\n");
-  printf("///                                                                         ///\n");
-  printf("///////////////////////////////////////////////////////////////////////////////\n");
-  
-  while(fread(produto, sizeof(Produto), 1, fp)){
-    printf("Nome: %s\n", produto->nome);
-    printf("Tipo: %s\n", produto->tipo);
-    printf("Preço: %f\n", produto->preco);
-    printf("Estoque: %d\n", produto->quantidade);
-    printf("Status: %c\n", produto->status);
-    printf("Id: %s\n", produto->id);
-  }
+  printf("\n");
+  printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+  printf("@@@                            Sis-Fantasy                                  @@@\n");
+  printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
+  printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+  printf("@@@                                                                         @@@\n");
+  printf("@@@                  - - - - Relatórios de Produtos - - - -                 @@@\n");
+  printf("@@@                  1 * Relatório Geral de Produtos                        @@@\n");
+  printf("@@@                  2 * Relatório de Produtos por Categoria                @@@\n");
+  printf("@@@                  3 * Relatório de Produtos em Estoque                   @@@\n");
+  printf("@@@                  4 * Relatório de Produtos em Falta                     @@@\n");
+  printf("@@@                                                                         @@@\n");
+  printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+  printf("\n");
+  char op;
+  printf("Escolha uma opcao: ");
+  scanf(" %c", &op);
+  getchar();
 
+  switch(op) {
+      case '1':         
+          while(fread(produto, sizeof(Produto), 1, fp)){
+            printf("Nome: %s\n", produto->nome);
+            printf("Tipo: %s\n", produto->tipo);
+            printf("Preço: %f\n", produto->preco);
+            printf("Estoque: %d\n", produto->quantidade);
+            printf("Status: %c\n", produto->status);
+            printf("Id: %s\n", produto->id);
+          }
+          break;
+      case '2':
+          char tipo[10];
+          do{
+              printf("Digite o Tipo: ");
+              fgets(produto->tipo, 10, stdin);
+              produto->tipo[strcspn(produto->tipo, "\n")] = '\0';
+          }while(!verificarnome(produto->tipo));
+
+          while(fread(produto, sizeof(Produto), 1, fp)){
+            if(strcmp(produto->tipo, tipo)){
+              printf("Nome: %s\n", produto->nome);
+              printf("Tipo: %s\n", produto->tipo);
+              printf("Preço: %f\n", produto->preco);
+              printf("Estoque: %d\n", produto->quantidade);
+              printf("Status: %c\n", produto->status);
+              printf("Id: %s\n", produto->id);
+            }
+          }
+          break;
+      case '3':
+          while(fread(produto, sizeof(Produto), 1, fp)){
+            if(produto->status == '1'){
+              printf("Nome: %s\n", produto->nome);
+              printf("Tipo: %s\n", produto->tipo);
+              printf("Preço: %f\n", produto->preco);
+              printf("Estoque: %d\n", produto->quantidade);
+              printf("Status: %c\n", produto->status);
+              printf("Id: %s\n", produto->id);
+            }
+          }
+          break;
+      case '4':
+          while(fread(produto, sizeof(Produto), 1, fp)){
+            if(produto->status == '0'){
+              printf("Nome: %s\n", produto->nome);
+              printf("Tipo: %s\n", produto->tipo);
+              printf("Preço: %f\n", produto->preco);
+              printf("Estoque: %d\n", produto->quantidade);
+              printf("Status: %c\n", produto->status);
+              printf("Id: %s\n", produto->id);
+            }
+          }
+          break;
+  }
+  
   printf("\n");
   printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
   getchar();

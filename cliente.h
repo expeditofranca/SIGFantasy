@@ -1,4 +1,3 @@
-// void excluir_cliente(void);
 
 typedef struct cliente Cliente;
 
@@ -13,6 +12,7 @@ char menu_cliente(void);
 Cliente* cadastrar_cliente(Cliente*);
 Cliente* pesquisar_cliente(Cliente*);
 Cliente* atualizar_cliente(Cliente*);
+Cliente* excluir_cliente(Cliente*);
 Cliente* carregar_clientes(char*);
 void exibe_cliente(Cliente*);
 Cliente* limpa_lista(Cliente*);

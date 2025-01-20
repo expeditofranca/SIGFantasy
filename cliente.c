@@ -156,9 +156,21 @@ Cliente* cadastrar_cliente(Cliente* lista) {
         cliente->email[strcspn(cliente->email, "\n")] = '\0';
     }while(!verificaremail(cliente->email));
 
-    printf("\nDigite o Endereco: ");
-    fgets(cliente->endereco, 100, stdin);
-    cliente->endereco[strcspn(cliente->endereco, "\n")] = '\0';
+    do{
+        printf("\nDigite a Cidade: ");
+        fgets(cliente->cidade, 25, stdin);
+        cliente->cidade[strcspn(cliente->cidade, "\n")] = '\0';
+    }while(!verificarnome(cliente->cidade));
+
+    do{
+        printf("\nDigite o Bairro: ");
+        fgets(cliente->bairro, 25, stdin);
+        cliente->bairro[strcspn(cliente->bairro, "\n")] = '\0';
+    }while(!verificarnome(cliente->bairro));
+
+    printf("\nDigite a rua e número: ");
+    fgets(cliente->rua, 50, stdin);
+    cliente->rua[strcspn(cliente->rua, "\n")] = '\0';
 
     cliente->status = '1';
     sprintf(id, "%d", i + 1);
@@ -182,7 +194,7 @@ void exibe_cliente(Cliente* cliente) {
         printf("CPF: %s\n", cliente->cpf);
         printf("Nome: %s\n", cliente->nome);
         printf("E-mail: %s\n", cliente->email);
-        printf("Endereço: %s\n", cliente->endereco);
+        printf("Cidade:%s, Bairro:%s, Rua:%s\n", cliente->cidade, cliente->bairro, cliente->rua);
         printf("Telefone: %s\n", cliente->fone);
         printf("Status: %c\n", cliente->status);
         printf("Id: %s\n", cliente->id);
@@ -280,7 +292,7 @@ Cliente* atualizar_cliente(Cliente* lista) {
             fwrite(cliente, sizeof(Cliente), 1, f);
         } else {
             char op;
-            printf("O que deseja alterar? \n1 - Nome\n2 - Telefone\n3 - E-mail\n4 - Endereço\n");
+            printf("O que deseja alterar? \n1 - Nome\n2 - Telefone\n3 - E-mail\n");
             scanf("%c", &op);
             getchar();
 
@@ -305,11 +317,6 @@ Cliente* atualizar_cliente(Cliente* lista) {
                         fgets(cliente->email, 50, stdin);
                         cliente->email[strcspn(cliente->email, "\n")] = '\0';
                     }while(!verificaremail(cliente->email));
-                    break;
-                case '4':
-                    printf("\nDigite o novo Endereço: ");
-                    fgets(cliente->endereco, 100, stdin);
-                    cliente->endereco[strcspn(cliente->endereco, "\n")] = '\0';
                     break;
                 default:
                     printf("Opção inválida!\n");

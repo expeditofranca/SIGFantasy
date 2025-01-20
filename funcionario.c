@@ -47,8 +47,6 @@ char menu_funcionario(void) {
     return op;
 }
 
-
-
 void cadastrar_funcionario(void) {
     system("clear||cls");
     printf("\n");

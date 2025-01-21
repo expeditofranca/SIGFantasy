@@ -50,10 +50,8 @@ char menu_relatorio(void) {
 }
 
 void relatorio_cliente(void){
-  FILE *fp;
-  fp = fopen("cliente.dat", "rb");
-  Cliente* cliente;
-  cliente = (Cliente*) malloc(sizeof(Cliente));
+  Cliente* lista = carregar_clientes("cliente.dat");
+  Cliente* cliente = NULL;
 
   printf("\n");
   printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -76,15 +74,7 @@ void relatorio_cliente(void){
 
   switch(op) {
       case '1':
-          while(fread(cliente, sizeof(Cliente), 1, fp)){
-            printf("Nome: %s\n", cliente->nome);
-            printf("CPF: %s\n", cliente->cpf);
-            printf("Telefone: %s\n", cliente->fone);
-            printf("Cidade:%s, Bairro:%s, Rua:%s\n", cliente->cidade, cliente->bairro, cliente->rua);
-            printf("E-mail: %s\n", cliente->email);
-            printf("Status: %c\n", cliente->status);
-            printf("Id: %s\n", cliente->id);
-          }
+          lista_direta_clientes(lista);
           break;
       case '2':
           char cidade[25];
@@ -94,49 +84,37 @@ void relatorio_cliente(void){
             cidade[strcspn(cidade, "\n")] = '\0';
           }while(!verificarnome(cidade));
 
-          while(fread(cliente, sizeof(Cliente), 1, fp)){
-            if (strcmp(cliente->cidade, cidade) == 0){
-              printf("Nome: %s\n", cliente->nome);
-              printf("CPF: %s\n", cliente->cpf);
-              printf("Telefone: %s\n", cliente->fone);
-              printf("Cidade:%s, Bairro:%s, Rua:%s\n", cliente->cidade, cliente->bairro, cliente->rua);
-              printf("E-mail: %s\n", cliente->email);
-              printf("Status: %c\n", cliente->status);
-              printf("Id: %s\n", cliente->id);
+          cliente = lista;
+          while(cliente != NULL){
+            if(strcmp(cliente->cidade, cidade) == 0){
+              exibe_cliente(cliente);
             }
+            cliente = cliente->prox;
           }
           break;
       case '3':
-          while(fread(cliente, sizeof(Cliente), 1, fp)){
-            if (cliente->status == '1'){
-              printf("Nome: %s\n", cliente->nome);
-              printf("CPF: %s\n", cliente->cpf);
-              printf("Telefone: %s\n", cliente->fone);
-              printf("Cidade:%s, Bairro:%s, Rua:%s\n", cliente->cidade, cliente->bairro, cliente->rua);
-              printf("E-mail: %s\n", cliente->email);
-              printf("Status: %c\n", cliente->status);
-              printf("Id: %s\n", cliente->id);
+          cliente = lista;
+          while(cliente != NULL){
+            if(cliente->status == '1'){
+              exibe_cliente(cliente);
             }
+            cliente = cliente->prox;
           }
           break;
       case '4': 
-          while(fread(cliente, sizeof(Cliente), 1, fp)){
-            if (cliente->status == '0'){
-              printf("Nome: %s\n", cliente->nome);
-              printf("CPF: %s\n", cliente->cpf);
-              printf("Telefone: %s\n", cliente->fone);
-              printf("Cidade:%s, Bairro:%s, Rua:%s\n", cliente->cidade, cliente->bairro, cliente->rua);
-              printf("E-mail: %s\n", cliente->email);
-              printf("Status: %c\n", cliente->status);
-              printf("Id: %s\n", cliente->id);
+          cliente = lista;
+          while(cliente != NULL){
+            if(cliente->status == '0'){
+              exibe_cliente(cliente);
             }
+            cliente = cliente->prox;
           }
           break;
       default:  printf("Escolha inválida!");
                 break;
   }
 
-  free(cliente);
+  free(lista);
 
   printf("\n");
   printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");

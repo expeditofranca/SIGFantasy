@@ -79,6 +79,7 @@ void exibe_cliente(Cliente* cliente) {
         printf("Telefone: %s\n", cliente->fone);
         printf("Status: %c\n", cliente->status);
         printf("Id: %s\n", cliente->id);
+        printf("\n");
     }
 }
 
@@ -114,7 +115,6 @@ void lista_clientes(Cliente* lista) {
 void lista_direta_clientes(Cliente* cliente) {
     while (cliente != NULL) {
         exibe_cliente(cliente);
-        printf("\n");
         cliente = cliente->prox;
     }
 }
@@ -125,7 +125,6 @@ void lista_inversa_clientes(Cliente* cliente) {
         lista_inversa_clientes(cliente->prox);
     }
     exibe_cliente(cliente);
-    printf("\n");
 }
 
 Cliente* limpa_clientes(Cliente* lista) {

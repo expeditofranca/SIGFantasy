@@ -15,10 +15,15 @@ char modulo_funcionario(void) {
                       break;
             case '2': Funcionario* funcionario = pesquisar_funcionario(lista);
                       exibe_funcionario(funcionario);
+                      printf("\nPesquisa concluída!\n");
+                      printf("Tecle ENTER para continuar...");
+                      getchar();
                       break;
             case '3': lista = atualizar_funcionario(lista);
                       break;
             case '4': lista = excluir_funcionario(lista);
+                      break;
+            case '5': lista_funcionarios(lista);
                       break;
             case '0': 
                       break;
@@ -74,13 +79,52 @@ void exibe_funcionario(Funcionario* funcionario) {
         printf("Telefone: %s\n", funcionario->fone);
         printf("Status: %c\n", funcionario->status);
         printf("Id: %s\n", funcionario->id);
-        printf("Próximo: %p\n", funcionario->prox);
         printf("\n");
     }
+}
 
-    printf("\nPesquisa concluída!\n");
-    printf("Tecle ENTER para continuar...");
+void lista_funcionarios(Funcionario* lista) {
+    system("clear||cls");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@                            Sis-Fantasy                                  @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@                                                                         @@@\n");
+    printf("@@@                    * * * LISTA DE FUNCIONÁRIOS * * *                    @@@\n");
+    printf("@@@                                                                         @@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    char ordem;
+    printf("Voce deseja exibir a lista em qual ordem?\n");
+    printf("1 - Ordem direta\n");
+    printf("2 - Ordem inversa\n");
+    scanf("%c", &ordem);
     getchar();
+    
+    if (ordem == '1') {
+        lista_direta_funcionarios(lista);
+    } else if (ordem == '2'){
+        if (lista != NULL) {
+            lista_inversa_funcionarios(lista);
+        }
+    }
+    printf("\nTecle ENTER para continuar...\n");
+    getchar();
+}
+
+
+void lista_direta_funcionarios(Funcionario* funcionario) {
+    while (funcionario != NULL) {
+        exibe_funcionario(funcionario);
+        funcionario = funcionario->prox;
+    }
+}
+
+
+void lista_inversa_funcionarios(Funcionario* funcionario) {
+    if (funcionario->prox != NULL) {
+        lista_inversa_funcionarios(funcionario->prox);
+    }
+    exibe_funcionario(funcionario);
 }
 
 Funcionario* limpa_funcionarios(Funcionario* lista) {
@@ -108,6 +152,7 @@ char menu_funcionario(void) {
     printf("@@@                         2 * PESQUISAR FUNCIONARIO                       @@@\n");
     printf("@@@                         3 * ATUALIZAR FUNCIONARIO                       @@@\n");
     printf("@@@                         4 * EXCLUIR FUNCIONARIO                         @@@\n");
+    printf("@@@                         5 * LISTA FUNCIONARIO                           @@@\n");
     printf("@@@                         0 * VOLTAR                                      @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("\n");
@@ -125,7 +170,8 @@ Funcionario* cadastrar_funcionario(Funcionario* lista) {
     printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
-    printf("@@@               * * *  CADASTRAR FUNCIONARIO   * * *                      @@@\n");
+    printf("@@@                  * * *  CADASTRAR FUNCIONARIO   * * *                   @@@\n");
+    printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     int i = 0;
     char id[3] = "";

@@ -15,10 +15,15 @@ char modulo_cliente(void) {
                       break;
             case '2': Cliente* cliente = pesquisar_cliente(lista);
                       exibe_cliente(cliente);
+                      printf("\nPesquisa concluída!\n");
+                      printf("Tecle ENTER para continuar...");
+                      getchar();
                       break;
             case '3': lista = atualizar_cliente(lista);
                       break;
             case '4': lista = excluir_cliente(lista);
+                      break;
+            case '5': lista_clientes(lista);
                       break;
             case '0':
                       break;
@@ -74,13 +79,53 @@ void exibe_cliente(Cliente* cliente) {
         printf("Telefone: %s\n", cliente->fone);
         printf("Status: %c\n", cliente->status);
         printf("Id: %s\n", cliente->id);
-        printf("Próximo: %p\n", cliente->prox);
-        printf("\n");
     }
+}
 
-    printf("\nPesquisa concluída!\n");
-    printf("Tecle ENTER para continuar...");
+void lista_clientes(Cliente* lista) {
+    system("clear||cls");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@                            Sis-Fantasy                                  @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@                                                                         @@@\n");
+    printf("@@@                      * * * LISTA DE CLIENTES * * *                      @@@\n");
+    printf("@@@                                                                         @@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    char ordem;
+    printf("Voce deseja exibir a lista em qual ordem?\n");
+    printf("1 - Ordem direta\n");
+    printf("2 - Ordem inversa\n");
+    scanf("%c", &ordem);
     getchar();
+    
+    if (ordem == '1') {
+        lista_direta_clientes(lista);
+    } else if (ordem == '2'){
+        if (lista != NULL) {
+            lista_inversa_clientes(lista);
+        }
+    }
+    printf("\nTecle ENTER para continuar...\n");
+    getchar();
+}
+
+
+void lista_direta_clientes(Cliente* cliente) {
+    while (cliente != NULL) {
+        exibe_cliente(cliente);
+        printf("\n");
+        cliente = cliente->prox;
+    }
+}
+
+
+void lista_inversa_clientes(Cliente* cliente) {
+    if (cliente->prox != NULL) {
+        lista_inversa_clientes(cliente->prox);
+    }
+    exibe_cliente(cliente);
+    printf("\n");
 }
 
 Cliente* limpa_clientes(Cliente* lista) {
@@ -108,6 +153,7 @@ char menu_cliente(void) {
     printf("@@@                         2 * PESQUISAR CLIENTE                           @@@\n");
     printf("@@@                         3 * ATUALIZAR CLIENTE                           @@@\n");
     printf("@@@                         4 * EXCLUIR CLIENTE                             @@@\n");
+    printf("@@@                         5 * LISTA CLIENTES                              @@@\n");
     printf("@@@                         0 * VOLTAR                                      @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("\n");

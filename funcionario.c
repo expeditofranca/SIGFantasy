@@ -36,7 +36,7 @@ Funcionario* carregar_funcionarios(char* arquivo){
     FILE* fp = fopen(arquivo, "rb");
     if (fp == NULL) {
         printf("Erro ao abrir funcionario.dat\n");
-        return 0;
+        return NULL;
     }
 
     Funcionario* lista = NULL;
@@ -83,7 +83,7 @@ void exibe_funcionario(Funcionario* funcionario) {
     getchar();
 }
 
-Funcionario* limpa_lista(Funcionario* lista) {
+Funcionario* limpa_funcionarios(Funcionario* lista) {
     Funcionario* funcionario;
 
     funcionario = lista;
@@ -143,7 +143,6 @@ Funcionario* cadastrar_funcionario(Funcionario* lista) {
     }
 
     while(fread(funcionario, sizeof(Funcionario), 1, fp) == 1 ){
-        printf("0");
         i++;
     }
     fclose(fp);

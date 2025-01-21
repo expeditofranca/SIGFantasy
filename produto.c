@@ -5,24 +5,92 @@
 #include "funcoes.h"
 
 char modulo_produto(void) {
+    Produto* lista = carregar_produtos("produto.dat");
     char opcao_p;
     do {
         opcao_p = menu_produto();
         switch(opcao_p) {
-            case '1': cadastrar_produto();
+            case '1': lista = cadastrar_produto(lista);
                       break;
-            case '2': pesquisar_produto();
+            case '2': Produto* produto = pesquisar_produto(lista);
+                      exibe_produto(produto);
                       break;
-            case '3': atualizar_produto();
+            case '3': lista = atualizar_produto(lista);
                       break;
-            case '4': excluir_produto();
+            case '4': lista = excluir_produto(lista);
+                      break;
+            case '0':
                       break;
             default:
                     printf("Opção inválida!\n");
                     break;
         }
     } while(opcao_p != '0');
+
+    lista = limpa_produtos(lista);
     return 0;
+}
+
+Produto* carregar_produtos(char* arquivo){
+    FILE* fp = fopen(arquivo, "rb");
+    if (fp == NULL) {
+        printf("Erro ao abrir produto.dat\n");
+        return NULL;
+    }
+
+    Produto* lista = NULL;
+    int acabou = 0;
+    while (acabou != 1){
+        Produto* produto = (Produto*) malloc(sizeof(Produto));
+        if(fread(produto, sizeof(Produto), 1, fp) == 1){
+            if (lista == NULL) {
+                lista = produto;
+            } else {
+                Produto* ultimo;
+                ultimo = lista;
+                while (ultimo->prox != NULL) {
+                    ultimo = ultimo->prox;
+                }
+                ultimo->prox = produto;
+            }
+        } else {
+            acabou = 1;
+        }
+    }
+    
+    fclose(fp);
+    return lista;
+}
+
+void exibe_produto(Produto* produto) {
+    if (produto == NULL) {
+        printf("Produto não existe!\n");
+    } else {
+        printf("Nome: %s\n", produto->nome);
+        printf("Tipo: %s\n", produto->tipo);
+        printf("Preço: %.2f\n", produto->preco);
+        printf("Quantidade: %d\n", produto->quantidade);
+        printf("Status: %c\n", produto->status);
+        printf("Id: %s\n", produto->id);
+        printf("Próximo: %p\n", produto->prox);
+        printf("\n");
+    }
+
+    printf("\nPesquisa concluída!\n");
+    printf("Tecle ENTER para continuar...");
+    getchar();
+}
+
+Produto* limpa_produtos(Produto* lista) {
+    Produto* produto;
+
+    produto = lista;
+    while (lista != NULL) {
+        lista = lista->prox;
+        free(produto);
+        produto = lista;
+    }
+    return lista;
 }
 
 char menu_produto(void) {
@@ -47,7 +115,7 @@ char menu_produto(void) {
     return op;
 }
 
-void cadastrar_produto(void) {
+Produto* cadastrar_produto(Produto* lista) {
     system("clear||cls");
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -55,7 +123,7 @@ void cadastrar_produto(void) {
     printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
-    printf("@@@                 * * *  CADASTRAR PRODUTO   * * *                        @@@\n");
+    printf("@@@                    * * *  CADASTRAR PRODUTO   * * *                     @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     int i = 0;
     char id[3] = "";
@@ -63,15 +131,14 @@ void cadastrar_produto(void) {
     fp = fopen("produto.dat", "rb");
     if (fp == NULL) {
         printf("Erro ao abrir produto.dat\n");
-        return;
+        return lista;
     }
 
-    Produto* produto;
-    produto = (Produto*) malloc(sizeof(Produto));
+    Produto* produto = (Produto*) malloc(sizeof(Produto));
     if (produto == NULL) {
         printf("Erro ao alocar memória para produto\n");
         fclose(fp);
-        return;
+        return lista;
     }
 
     while(fread(produto, sizeof(Produto), 1, fp) == 1){
@@ -83,35 +150,37 @@ void cadastrar_produto(void) {
 
     do{
         printf("Digite o Nome: ");
-        fgets(produto->nome, 50, stdin);
+        fgets(produto->nome, 25, stdin);
         produto->nome[strcspn(produto->nome, "\n")] = '\0';
     }while(!verificarnome(produto->nome));
 
     do{
         printf("Digite o Tipo: ");
-        fgets(produto->tipo, 10, stdin);
+        fgets(produto->tipo, 20, stdin);
         produto->tipo[strcspn(produto->tipo, "\n")] = '\0';
     }while(!verificarnome(produto->tipo));
 
     char preco[10];
     do{
         printf("Digite o Preco: ");
-        scanf("%s", preco);
-        getchar();
+        fgets(preco, 10, stdin);
+        preco[strcspn(preco, "\n")] = '\0';
     }while(!verificarpreco(preco));
     produto->preco = strtof(preco, NULL);
 
-    char qntd[] = "";
+    char qntd[10];
     do{
         printf("Digite a Quantidade em Estoque: ");
-        scanf("%s", qntd);
-        getchar(); 
+        fgets(qntd, 10, stdin);
+        qntd[strcspn(qntd, "\n")] = '\0'; 
     }while(!verificarnumero(qntd));
     produto->quantidade = atoi(qntd);
 
     produto->status = '1';
     sprintf(id, "%d", i + 1);
     strcpy(produto->id, id);
+
+    produto->prox = NULL;
 
     fwrite(produto, sizeof(Produto), 1, fp);
     fclose(fp);
@@ -120,9 +189,11 @@ void cadastrar_produto(void) {
     printf("\nProduto cadastrado com sucesso!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
+
+    return carregar_produtos("produto.dat");
 }
 
-void pesquisar_produto(void){
+Produto* pesquisar_produto(Produto* lista){
     system("clear||cls");
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -133,22 +204,16 @@ void pesquisar_produto(void){
     printf("@@@                    * * *  Pesquisar Produto  * * *                      @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    int i = 0;
+
     char id[3];
     FILE* fp;
     fp = fopen("produto.dat", "rb");
     if (fp == NULL) {
         printf("Erro ao abrir produto.dat\n");
-        return;
+        return lista;
     }
 
     Produto* produto;
-    produto = (Produto*) malloc(sizeof(Produto));
-    if (produto == NULL) {
-        printf("Erro ao alocar memória para produto\n");
-        fclose(fp);
-        return;
-    }
     
     do{
         printf("\nDigite o Id : ");
@@ -156,31 +221,20 @@ void pesquisar_produto(void){
         id[strcspn(id, "\n")] = '\0'; 
     }while(!verificarnumero(id));
 
-    while(fread(produto, sizeof(Produto), 1, fp) == 1) {
-        if ((strcmp(produto->id, id) == 0)){
-            printf("Nome: %s\n", produto->nome);
-            printf("Tipo: %s\n", produto->tipo);
-            printf("Preço: %.2f\n", produto->preco);
-            printf("Quantidade: %d\n", produto->quantidade);
-            printf("Status: %c\n", produto->status);
-            printf("Id: %s\n", produto->id);
-            i = i + 1;
+    produto = lista;
+    while (produto != NULL){
+        if (strcmp(id, produto->id) == 0) {
+            return produto;
+        } else {
+            produto = produto->prox;
         }
-    }
-
-    if(i == 0){
-        printf("Produto não encontrado!");
     }
     
     fclose(fp);
-    free(produto);
-
-    printf("\nPesquisa concluída!\n");
-    printf(">>> Tecle <ENTER> para continuar...\n");
-    getchar();
+    return NULL;
 }
 
-void atualizar_produto(void){
+Produto* atualizar_produto(Produto* lista){
     system("clear||cls");
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -191,18 +245,19 @@ void atualizar_produto(void){
     printf("@@@                     * * *  Atualizar Produto  * * *                     @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    
     char id[3];
     FILE *fp = fopen("produto.dat", "rb");
     if (fp == NULL) {
         printf("Erro ao abrir produto.dat\n");
-        return;
+        return lista;
     }
 
     FILE *f = fopen("temp.dat", "wb");
     if (f == NULL) {
         printf("Erro ao criar temp.dat\n");
         fclose(fp);
-        return;
+        return lista;
     }
 
     Produto *produto = (Produto*) malloc(sizeof(Produto));
@@ -210,7 +265,7 @@ void atualizar_produto(void){
         printf("Erro ao alocar memória para produto\n");
         fclose(fp);
         fclose(f);
-        return;
+        return lista;
     }
 
     do {
@@ -232,7 +287,7 @@ void atualizar_produto(void){
                 case '1':
                     do{
                         printf("Digite o novo Nome: ");
-                        fgets(produto->nome, 50, stdin);
+                        fgets(produto->nome, 25, stdin);
                         produto->nome[strcspn(produto->nome, "\n")] = '\0';
                     }while(!verificarnome(produto->nome));
                     break;
@@ -263,8 +318,11 @@ void atualizar_produto(void){
     printf("\nAtualização concluída!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
+
+    return carregar_produtos("produto.dat");
 }
-void excluir_produto(void){
+
+Produto* excluir_produto(Produto* lista){
     system("clear||cls");
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -275,18 +333,19 @@ void excluir_produto(void){
     printf("@@@                      * * *  Excluir Produto  * * *                      @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    
     char id[3];
     FILE *fp = fopen("produto.dat", "rb");
     if (fp == NULL) {
         printf("Erro ao abrir produto.dat\n");
-        return;
+        return lista;
     }
 
     FILE *f = fopen("temp.dat", "wb");
     if (f == NULL) {
         printf("Erro ao criar temp.dat\n");
         fclose(fp);
-        return;
+        return lista;
     }
 
     Produto *produto = (Produto*) malloc(sizeof(Produto));
@@ -294,7 +353,7 @@ void excluir_produto(void){
         printf("Erro ao alocar memória para produto\n");
         fclose(fp);
         fclose(f);
-        return;
+        return lista;
     }
 
     char op;
@@ -311,9 +370,14 @@ void excluir_produto(void){
     } while (!verificarnumero(id));
 
     if (op == '1') {
-        while (fread(produto, sizeof(produto), 1, fp) == 1) {
+        char id[3];
+        int i = 0;
+        while (fread(produto, sizeof(Produto), 1, fp) == 1) {
             if (strcmp(produto->id, id) != 0) {
-                fwrite(produto, sizeof(produto), 1, f);
+                i = i + 1;
+                sprintf(id, "%d", i);
+                strcpy(produto->id, id);
+                fwrite(produto, sizeof(Produto), 1, f);
             }
         }
     } else {
@@ -334,4 +398,6 @@ void excluir_produto(void){
     printf("\nExclusão concluída!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
+
+    return carregar_produtos("produto.dat");
 }  

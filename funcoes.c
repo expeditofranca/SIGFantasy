@@ -4,6 +4,13 @@
 #include <ctype.h>
 #include "funcoes.h"
 
+int verificarletra(char a){
+    if ((a >= 'A' && a <= 'Z') || (a >= 'a' && a <= 'z')) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 int verificarnumero(char* num){
     int a = 0;
@@ -94,12 +101,13 @@ int verificarCPF(char* cpf) {
 }
 
 int verificarnome(char* nome){
-    for(int i = 0; nome[i]!= '\0';i++){
-        if(!isalpha(nome[i])){
-            printf("Nome Invalido ");
+    int i;
+    for(i = 0; nome[i] != '\0'; i++){
+        if (!verificarletra(nome[i]) && nome[i] != ' ') {
             return 0;
         }
-    }return 1;
+    }
+    return 1;
 }
 
 int verificarfone(char* fone){

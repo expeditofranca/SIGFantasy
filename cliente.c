@@ -36,7 +36,7 @@ Cliente* carregar_clientes(char* arquivo){
     FILE* fp = fopen(arquivo, "rb");
     if (fp == NULL) {
         printf("Erro ao abrir cliente.dat\n");
-        return 0;
+        return NULL;
     }
 
     Cliente* lista = NULL;

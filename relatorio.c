@@ -122,10 +122,8 @@ void relatorio_cliente(void){
 }
 
 void relatorio_funcionario(void){
-  FILE *fp;
-  Funcionario* funcionario;
-  fp = fopen("funcionario.dat", "rb");
-  funcionario = (Funcionario*) malloc(sizeof(Funcionario));
+  Funcionario* lista = carregar_funcionarios("funcionario.dat");
+  Funcionario* funcionario = NULL;
 
   printf("\n");
   printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -148,15 +146,7 @@ void relatorio_funcionario(void){
 
   switch(op) {
       case '1':
-          while(fread(funcionario, sizeof(Funcionario), 1, fp)){
-            printf("Nome: %s\n", funcionario->nome);
-            printf("CPF: %s\n", funcionario->cpf);
-            printf("Cargo: %s\n", funcionario->cargo);
-            printf("Telefone: %s\n", funcionario->fone);
-            printf("E-mail: %s\n", funcionario->email);
-            printf("Status: %c\n", funcionario->status);
-            printf("Id: %s\n", funcionario->id);
-          }
+          lista_direta_funcionarios(lista);
           break;
       case '2': 
           char cargo[30];
@@ -166,49 +156,36 @@ void relatorio_funcionario(void){
               cargo[strcspn(cargo, "\n")] = '\0';
           }while(!verificarnome(cargo));
 
-          while(fread(funcionario, sizeof(Funcionario), 1, fp)){
+          funcionario = lista;
+          while(funcionario != NULL){
             if(strcmp(funcionario->cargo, cargo) == 0){
-              printf("Nome: %s\n", funcionario->nome);
-              printf("CPF: %s\n", funcionario->cpf);
-              printf("Cargo: %s\n", funcionario->cargo);
-              printf("Telefone: %s\n", funcionario->fone);
-              printf("E-mail: %s\n", funcionario->email);
-              printf("Status: %c\n", funcionario->status);
-              printf("Id: %s\n", funcionario->id);
+              exibe_funcionario(funcionario);
             }
+            funcionario = funcionario->prox;
           }
           break;
       case '3': 
-          while(fread(funcionario, sizeof(Funcionario), 1, fp)){
+          funcionario = lista;
+          while(funcionario != NULL){
             if(funcionario->status == '1'){
-              printf("Nome: %s\n", funcionario->nome);
-              printf("CPF: %s\n", funcionario->cpf);
-              printf("Cargo: %s\n", funcionario->cargo);
-              printf("Telefone: %s\n", funcionario->fone);
-              printf("E-mail: %s\n", funcionario->email);
-              printf("Status: %c\n", funcionario->status);
-              printf("Id: %s\n", funcionario->id);
+              exibe_funcionario(funcionario);
             }
+            funcionario = funcionario->prox;
           }
           break;
       case '4':
-          while(fread(funcionario, sizeof(Funcionario), 1, fp)){
+          funcionario = lista;
+          while(funcionario != NULL){
             if(funcionario->status == '0'){
-              printf("Nome: %s\n", funcionario->nome);
-              printf("CPF: %s\n", funcionario->cpf);
-              printf("Cargo: %s\n", funcionario->cargo);
-              printf("Telefone: %s\n", funcionario->fone);
-              printf("E-mail: %s\n", funcionario->email);
-              printf("Status: %c\n", funcionario->status);
-              printf("Id: %s\n", funcionario->id);
+              exibe_funcionario(funcionario);
             }
+            funcionario = funcionario->prox;
           }
           break;
       default:  printf("Escolha inválida!");
                 break;
   }
   
-
   printf("\n");
   printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
   getchar();

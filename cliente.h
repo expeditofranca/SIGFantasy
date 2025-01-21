@@ -15,4 +15,4 @@ Cliente* atualizar_cliente(Cliente*);
 Cliente* excluir_cliente(Cliente*);
 Cliente* carregar_clientes(char*);
 void exibe_cliente(Cliente*);
-Cliente* limpa_lista(Cliente*);
+Cliente* limpa_clientes(Cliente*);

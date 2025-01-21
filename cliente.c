@@ -20,8 +20,6 @@ char modulo_cliente(void) {
                       break;
             case '4': lista = excluir_cliente(lista);
                       break;
-            // case '5': exibe_lista(lista);
-            //           break;
             case '0':
                       break;
             default:
@@ -30,7 +28,7 @@ char modulo_cliente(void) {
         }
     } while(opcao_c != '0');
 
-    lista = limpa_lista(lista);
+    lista = limpa_clientes(lista);
     return 0;
 }
 
@@ -65,14 +63,34 @@ Cliente* carregar_clientes(char* arquivo){
     return lista;
 }
 
-Cliente* limpa_lista(Cliente* lista) {
-    Cliente* am;
+void exibe_cliente(Cliente* cliente) {
+    if (cliente == NULL) {
+        printf("Cliente não existe!\n");
+    } else {
+        printf("CPF: %s\n", cliente->cpf);
+        printf("Nome: %s\n", cliente->nome);
+        printf("E-mail: %s\n", cliente->email);
+        printf("Cidade:%s, Bairro:%s, Rua:%s\n", cliente->cidade, cliente->bairro, cliente->rua);
+        printf("Telefone: %s\n", cliente->fone);
+        printf("Status: %c\n", cliente->status);
+        printf("Id: %s\n", cliente->id);
+        printf("Próximo: %p\n", cliente->prox);
+        printf("\n");
+    }
 
-    am = lista;
+    printf("\nPesquisa concluída!\n");
+    printf("Tecle ENTER para continuar...");
+    getchar();
+}
+
+Cliente* limpa_clientes(Cliente* lista) {
+    Cliente* cliente;
+
+    cliente = lista;
     while (lista != NULL) {
         lista = lista->prox;
-        free(am);
-        am = lista;
+        free(cliente);
+        cliente = lista;
     }
     return lista;
 }
@@ -185,26 +203,6 @@ Cliente* cadastrar_cliente(Cliente* lista) {
     getchar();
 
     return carregar_clientes("cliente.dat");
-}
-
-void exibe_cliente(Cliente* cliente) {
-    if (cliente == NULL) {
-        printf("Cliente não existe!\n");
-    } else {
-        printf("CPF: %s\n", cliente->cpf);
-        printf("Nome: %s\n", cliente->nome);
-        printf("E-mail: %s\n", cliente->email);
-        printf("Cidade:%s, Bairro:%s, Rua:%s\n", cliente->cidade, cliente->bairro, cliente->rua);
-        printf("Telefone: %s\n", cliente->fone);
-        printf("Status: %c\n", cliente->status);
-        printf("Id: %s\n", cliente->id);
-        printf("Próximo: %p\n", cliente->prox);
-        printf("\n");
-    }
-
-    printf("\nPesquisa concluída!\n");
-    printf("Tecle ENTER para continuar...");
-    getchar();
 }
 
 Cliente* pesquisar_cliente(Cliente* lista){

@@ -266,7 +266,7 @@ Produto* pesquisar_produto(Produto* lista){
     Produto* produto;
     
     do{
-        printf("\nDigite o Código: ");
+        printf("\nDigite o Código do Produto: ");
         fgets(codigo, 7, stdin);
         codigo[strcspn(codigo, "\n")] = '\0'; 
     }while(!verificarnumero(codigo));

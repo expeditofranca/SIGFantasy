@@ -251,6 +251,7 @@ Funcionario* pesquisar_funcionario(Funcionario* lista){
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@                  * * *  Pesquisar Funcionario  * * *                    @@@\n");
+    printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 
     char cpf[15];

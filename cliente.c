@@ -272,14 +272,14 @@ Cliente* pesquisar_cliente(Cliente* lista){
     Cliente* cliente;
 
     do{
-        printf("\nDigite o CPF : ");
+        printf("\nDigite o CPF do Cliente: ");
         fgets(cpf, 15, stdin);
         cpf[strcspn(cpf, "\n")] = '\0'; 
     }while(!verificarCPF(cpf));
 
     cliente = lista;
     while (cliente != NULL){
-        if (strcmp(cpf, cliente->cpf) == 0) {
+        if (strcmp(cliente->cpf, cpf) == 0) {
             return cliente;
         } else {
             cliente = cliente->prox;

@@ -10,24 +10,138 @@
 #include "produto.h"
 
 char modulo_aluguel(void) {
+    Aluguel* lista = carregar_alugueis("aluguel.dat");
     char opcao_c;
     do {
         opcao_c = menu_aluguel();
         switch(opcao_c) {
-            case '1': cadastrar_aluguel();
+            case '1': lista = cadastrar_aluguel(lista);
                       break;
-            case '2': pesquisar_aluguel();
+            case '2': Aluguel* aluguel = pesquisar_aluguel(lista);
+                      exibe_aluguel(aluguel);
+                      printf("\nPesquisa concluída!\n");
+                      printf("Tecle ENTER para continuar...");
+                      getchar();
                       break;
-            case '3': atualizar_aluguel();
+            case '3': lista = atualizar_aluguel(lista);
                       break;
-            case '4': excluir_aluguel();
+            case '4': lista = excluir_aluguel(lista);
+                      break;
+            case '5': lista_alugueis(lista);
+                      break;
+            case '0': 
                       break;
             default:
                     printf("Opção inválida!\n");
                     break;
         }
     } while(opcao_c != '0');
+
+    lista = limpa_alugueis(lista);
     return 0;
+}
+
+Aluguel* carregar_alugueis(char* arquivo){
+    FILE* fp = fopen(arquivo, "rb");
+    if (fp == NULL) {
+        printf("Erro ao abrir aluguel.dat\n");
+        return NULL;
+    }
+
+    Aluguel* lista = NULL;
+    int acabou = 0;
+    while (acabou != 1){
+        Aluguel* aluguel = (Aluguel*) malloc(sizeof(Aluguel));
+        if(fread(aluguel, sizeof(Aluguel), 1, fp) == 1){
+            if (lista == NULL) {
+                lista = aluguel;
+            } else {
+                Aluguel* ultimo;
+                ultimo = lista;
+                while (ultimo->prox != NULL) {
+                    ultimo = ultimo->prox;
+                }
+                ultimo->prox = aluguel;
+            }
+        } else {
+            acabou = 1;
+        }
+    }
+    
+    fclose(fp);
+    return lista;
+}
+
+void exibe_aluguel(Aluguel* aluguel) {
+    if (aluguel == NULL) {
+        printf("Aluguel não existe!\n");
+    } else {
+        printf("Nome do Cliente: %s\n", aluguel->nomeC);
+        printf("Nome do Funcionário: %s\n", aluguel->nomeF);
+        printf("Nome do Produto: %s\n", aluguel->nomeP);
+        printf("Data do aluguel: %s\n", aluguel->dataAl);
+        printf("Data de devolução: %s\n", aluguel->dataDev);
+        printf("Valor do aluguel: %.2f\n", aluguel->valor);
+        printf("Status: %c\n", aluguel->status);
+        printf("Id: %s\n", aluguel->id);
+        printf("\n");
+    }
+}
+
+void lista_alugueis(Aluguel* lista) {
+    system("clear||cls");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@                            Sis-Fantasy                                  @@@\n");
+    printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@                                                                         @@@\n");
+    printf("@@@                      * * * LISTA DE ALUGUEIS * * *                      @@@\n");
+    printf("@@@                                                                         @@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    char ordem;
+    printf("Voce deseja exibir a lista em qual ordem?\n");
+    printf("1 - Ordem direta\n");
+    printf("2 - Ordem inversa\n");
+    scanf("%c", &ordem);
+    getchar();
+    
+    if (ordem == '1') {
+        lista_direta_alugueis(lista);
+    } else if (ordem == '2'){
+        if (lista != NULL) {
+            lista_inversa_alugueis(lista);
+        }
+    }
+    printf("\nTecle ENTER para continuar...\n");
+    getchar();
+}
+
+
+void lista_direta_alugueis(Aluguel* aluguel) {
+    while (aluguel != NULL) {
+        exibe_aluguel(aluguel);
+        aluguel = aluguel->prox;
+    }
+}
+
+
+void lista_inversa_alugueis(Aluguel* aluguel) {
+    if (aluguel->prox != NULL) {
+        lista_inversa_alugueis(aluguel->prox);
+    }
+    exibe_aluguel(aluguel);
+}
+
+Aluguel* limpa_alugueis(Aluguel* lista) {
+    Aluguel* aluguel;
+
+    aluguel = lista;
+    while (lista != NULL) {
+        lista = lista->prox;
+        free(aluguel);
+        aluguel = lista;
+    }
+    return lista;
 }
 
 char menu_aluguel(void) {
@@ -43,6 +157,7 @@ char menu_aluguel(void) {
     printf("@@@                         2 * PESQUISAR ALUGUEL                           @@@\n");
     printf("@@@                         3 * ATUALIZAR ALUGUEL                           @@@\n");
     printf("@@@                         4 * EXCLUIR ALUGUEL                             @@@\n");
+    printf("@@@                         5 * LISTA ALUGUEIS                              @@@\n");
     printf("@@@                         0 * VOLTAR                                      @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("\n");
@@ -52,7 +167,7 @@ char menu_aluguel(void) {
     return op;
 }
 
-void cadastrar_aluguel(void){
+Aluguel* cadastrar_aluguel(Aluguel* lista){
     system("clear||cls");
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -63,59 +178,18 @@ void cadastrar_aluguel(void){
     printf("@@@                     * * *  Cadastrar Aluguel  * * *                     @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-
-    char cpfC[15];
-    FILE *fc = fopen("cliente.dat", "rb");
-    if (fc == NULL) {
-        printf("Erro ao abrir cliente.dat\n");
-        return;
-    }
-    Cliente *cliente = (Cliente*) malloc(sizeof(Cliente));
-    if (cliente == NULL) {
-        printf("Erro ao alocar memória para cliente\n");
-        fclose(fc);
-        return;
-    }
-
-    char cpfF[15] = "";
-    FILE *ff = fopen("funcionario.dat", "rb");
-    if (ff == NULL) {
-        printf("Erro ao abrir funcionario.dat\n");
-        return;
-    }
-    Funcionario *funcionario = (Funcionario*) malloc(sizeof(Funcionario));
-    if (funcionario == NULL) {
-        printf("Erro ao alocar memória para funcionário\n");
-        fclose(ff);
-        return;
-    }
-
-    char idP[3] = "";
-    FILE* fp;
-    fp = fopen("produto.dat", "rb");
-    if (fp == NULL) {
-        printf("Erro ao abrir produto.dat\n");
-        return;
-    }
-    Produto *produto = (Produto*) malloc(sizeof(Produto));
-    if (produto == NULL) {
-        printf("Erro ao alocar memória para produto\n");
-        fclose(fp);
-        return;
-    }
-
-    char idA[3] = "";
+    char id[3] = "";
     FILE* fa; 
     fa = fopen("aluguel.dat", "rb");
     if (fa == NULL) {
         printf("Erro ao abrir aluguel.dat\n");
-        return;
+        return lista;
     }
     Aluguel *aluguel = (Aluguel*) malloc(sizeof(Aluguel));
     if (aluguel == NULL) {
         printf("Erro ao alocar memória para aluguel\n");
         fclose(fa);
-        return;
+        return lista;
     }
     int i = 0;
     while (fread(aluguel, sizeof(Aluguel), 1, fa)){
@@ -125,44 +199,38 @@ void cadastrar_aluguel(void){
     fa = fopen("aluguel.dat", "ab");
     if (fa == NULL) {
         printf("Erro ao abrir aluguel.dat\n");
-        return;
+        return lista;
     }
 
-    int iC = 0;
-    while(iC == 0){
-        do{
-            printf("\nDigite o CPF do cliente: ");
-            fgets(cpfC, 15, stdin);
-            cpfC[strcspn(cpfC, "\n")] = '\0'; 
-        }while(!verificarCPF(cpfC));
-        while(fread(cliente, sizeof(Cliente), 1, fc) == 1) {
-            if((strcmp(cliente->cpf, cpfC) == 0)){
-                iC = iC + 1;
-            }
-        }
-        if(iC == 0){
-            printf("Cliente não encontrado!");
-        }
-    }
-    strcpy(aluguel->cpfC, cpfC);
+    do{
+        printf("Digite o Código do aluguel: ");
+        fgets(aluguel->codigo, 7, stdin);
+        aluguel->codigo[strcspn(aluguel->codigo, "\n")] = '\0';
+    }while(!verificarnumero(aluguel->codigo));
 
-    int iF = 0;
-    while(iF == 0){
-        do{
-            printf("\nDigite o CPF do funcionário: ");
-            fgets(cpfF, 15, stdin);
-            cpfF[strcspn(cpfF, "\n")] = '\0'; 
-        }while(!verificarCPF(cpfF));
-        while(fread(funcionario, sizeof(Funcionario), 1, ff) == 1) {
-            if((strcmp(funcionario->cpf, cpfF) == 0)){
-                iF = iF + 1;
-            }
-        }
-        if(iF == 0){
-            printf("Funcionário não encontrado!");
-        }
+    Cliente *cliente = pesquisar_cliente(carregar_clientes("cliente.dat"));
+    if(cliente == NULL){
+        printf("Cliente não encontrado!");
+        return lista;
     }
-    strcpy(aluguel->cpfF, cpfF);
+    strcpy(aluguel->cpfC, cliente->cpf);
+    strcpy(aluguel->nomeC, cliente->nome);
+
+    Funcionario *funcionario = pesquisar_funcionario(carregar_funcionarios("funcionario.dat"));
+    if(funcionario == NULL){
+        printf("Funcionário não encontrado!");
+        return lista;
+    }
+    strcpy(aluguel->cpfF, funcionario->cpf);
+    strcpy(aluguel->nomeF, funcionario->nome);
+
+    Produto *produto = pesquisar_produto(carregar_produtos("produto.dat"));
+    if(cliente == NULL){
+        printf("Produto não encontrado!");
+        return lista;
+    }
+    strcpy(aluguel->codProd, produto->codigo);
+    strcpy(aluguel->nomeP, produto->nome);
 
     char qntDias[3] = "";
     do{
@@ -171,6 +239,7 @@ void cadastrar_aluguel(void){
         qntDias[strcspn(qntDias, "\n")] = '\0'; 
     }while(!verificarnumero(qntDias));
     aluguel->qntDias = atoi(qntDias);
+    aluguel->valor = aluguel->qntDias * produto->preco;
 
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
@@ -182,46 +251,23 @@ void cadastrar_aluguel(void){
     sprintf(dataDev, "%02d/%02d/%04d", tm.tm_mday+aluguel->qntDias, tm.tm_mon + 1, tm.tm_year + 1900);
     strcpy(aluguel->dataDev, dataDev);
 
-    int iP = 0;
-    while(iP == 0){
-        do{
-            printf("\nDigite o Id do produto: ");
-            fgets(idP, 3, stdin);
-            idP[strcspn(idP, "\n")] = '\0'; 
-        }while(!verificarnumero(idP));
-
-        while(fread(produto, sizeof(Produto), 1, fp) == 1) {
-            if((strcmp(produto->id, idP) == 0)){
-                iP = iP + 1;
-                aluguel->valor = produto->preco * aluguel->qntDias;
-            }
-        }
-        if(iP == 0){
-            printf("Produto não encontrado!");
-        }
-    }
-    strcpy(aluguel->idP, idP);
-
     aluguel->status = '1';
-    sprintf(idA, "%d", i + 1);
-    strcpy(aluguel->id, idA);
+    sprintf(id, "%d", i + 1);
+    strcpy(aluguel->id, id);
+
+    aluguel->prox = NULL;
 
     fwrite(aluguel, sizeof(Aluguel), 1, fa);
-    fclose(fc);
-    fclose(ff);
-    fclose(fp);
     fclose(fa);
-    free(cliente);
-    free(funcionario);
-    free(produto);
-    free(aluguel);
 
     printf("\nAluguel cadastrado!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
+
+    return carregar_alugueis("alugueis.dat");
 }
 
-void pesquisar_aluguel(void){
+Aluguel* pesquisar_aluguel(Aluguel* lista){
     system("clear||cls");
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -233,54 +279,35 @@ void pesquisar_aluguel(void){
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 
-    char cpfC[15];
-    int i = 0;
     FILE *fa = fopen("aluguel.dat", "rb");
     if (fa == NULL) {
         printf("Erro ao abrir aluguel.dat\n");
-        return;
+        return lista;
     }
 
-    Aluguel* aluguel = (Aluguel*) malloc(sizeof(Aluguel));
-    if (aluguel == NULL) {
-        printf("Erro ao alocar memória para aluguel\n");
-        fclose(fa);
-        return;
-    }
+    Aluguel* aluguel;
 
-    while (i == 0){
-        do{
-            printf("\nDigite o CPF do cliente: ");
-            fgets(cpfC, 15, stdin);
-            cpfC[strcspn(cpfC, "\n")] = '\0'; 
-        }while(!verificarCPF(cpfC));
+    char codigo[7];
+    do{
+        printf("\nDigite o código do aluguel: ");
+        fgets(codigo, 7, stdin);
+        codigo[strcspn(codigo, "\n")] = '\0'; 
+    }while(!verificarnumero(codigo));
 
-        while(fread(aluguel, sizeof(Aluguel), 1, fa) == 1) {
-            if ((strcmp(aluguel->cpfC, cpfC) == 0)){
-                printf("Cliente: %s\n", aluguel->cpfC);
-                printf("Funcionário: %s\n", aluguel->cpfF);
-                printf("Data do aluguel: %s\n", aluguel->dataAl);
-                printf("Data de devolução: %s\n", aluguel->dataDev);
-                printf("Valor do aluguel: %.2f\n", aluguel->valor);
-                printf("Status do aluguel: %c\n", aluguel->status);
-                printf("Código do aluguel: %s\n", aluguel->id);
-                printf("Código do produto: %s\n", aluguel->idP);
-                printf("\n");
-                i = i + 1;
-            }
-        }
-
-        if(i == 0){
-            printf("Aluguel não encontrado!");
+    aluguel = lista;
+    while (aluguel != NULL){
+        if (strcmp(aluguel->codigo, codigo) == 0) {
+            return aluguel;
+        } else {
+            aluguel = aluguel->prox;
         }
     }
-    
 
-    printf(">>> Tecle <ENTER> para continuar...\n");
-    getchar();
+    fclose(fa);
+    return NULL;
 }
 
-void atualizar_aluguel(void){
+Aluguel* atualizar_aluguel(Aluguel* lista){
     system("clear||cls");
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -292,18 +319,18 @@ void atualizar_aluguel(void){
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 
-    char id[3];
+    char codigo[7];
     FILE *fa = fopen("aluguel.dat", "rb");
     if (fa == NULL) {
         printf("Erro ao abrir aluguel.dat\n");
-        return;
+        return lista;
     }
 
     FILE *f = fopen("temp.dat", "wb");
     if (f == NULL) {
         printf("Erro ao criar temp.dat\n");
         fclose(fa);
-        return;
+        return lista;
     }
 
     Aluguel *aluguel = (Aluguel*) malloc(sizeof(Aluguel));
@@ -311,26 +338,38 @@ void atualizar_aluguel(void){
         printf("Erro ao alocar memória para cliente\n");
         fclose(fa);
         fclose(f);
-        return;
+        return lista;
     }
 
     do {
-        printf("\nDigite o Id do aluguel: ");
-        fgets(id, 3, stdin);
-        id[strcspn(id, "\n")] = '\0';
-    } while (!verificarnumero(id));
+        printf("\nDigite o Código do aluguel: ");
+        fgets(codigo, 7, stdin);
+        codigo[strcspn(codigo, "\n")] = '\0';
+    } while (!verificarnumero(codigo));
 
     while (fread(aluguel, sizeof(Aluguel), 1, fa) == 1) {
-        if (strcmp(aluguel->id, id) != 0) {
+        printf("1");
+        if (strcmp(aluguel->codigo, codigo) != 0) {
             fwrite(aluguel, sizeof(Aluguel), 1, f);
+            printf("2");
         } else {
-            char valor[10];
+            printf("3");
+            char qntDias[3] = "";
             do{
-                printf("\nDigite o novo Valor: ");
-                fgets(valor, 10, stdin);
-                valor[strcspn(valor, "\n")] = '\0';
-            }while(!verificarpreco(valor));
-            aluguel->valor = strtof(valor, NULL);
+                printf("\nDigite de quantos dias será o aluguel: ");
+                fgets(qntDias, 3, stdin);
+                qntDias[strcspn(qntDias, "\n")] = '\0'; 
+            }while(!verificarnumero(qntDias));
+            aluguel->qntDias = atoi(qntDias);
+            Produto* produto = pesquisar_produto(carregar_produtos("produto.dat"));
+            aluguel->valor = aluguel->qntDias * produto->preco;
+
+            time_t t = time(NULL);
+            struct tm tm = *localtime(&t);
+            char dataDev[11];
+            sprintf(dataDev, "%02d/%02d/%04d", tm.tm_mday+aluguel->qntDias, tm.tm_mon + 1, tm.tm_year + 1900);
+            strcpy(aluguel->dataDev, dataDev);
+
             fwrite(aluguel, sizeof(Aluguel), 1, f);
         }
     }
@@ -344,9 +383,11 @@ void atualizar_aluguel(void){
     printf("\nAtualização concluída!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
+
+    return carregar_alugueis("aluguel.dat");
 }
 
-void excluir_aluguel(void){
+Aluguel* excluir_aluguel(Aluguel* lista){
     system("clear||cls");
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -358,18 +399,18 @@ void excluir_aluguel(void){
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 
-    char id[3];
+    char codigo[7];
     FILE *fa = fopen("aluguel.dat", "rb");
     if (fa == NULL) {
         printf("Erro ao abrir aluguel.dat\n");
-        return;
+        return lista;
     }
 
     FILE *f = fopen("temp.dat", "wb");
     if (f == NULL) {
         printf("Erro ao criar temp.dat\n");
         fclose(fa);
-        return;
+        return lista;
     }
 
     Aluguel *aluguel = (Aluguel*) malloc(sizeof(Aluguel));
@@ -377,7 +418,7 @@ void excluir_aluguel(void){
         printf("Erro ao alocar memória para cliente\n");
         fclose(fa);
         fclose(f);
-        return;
+        return lista;
     }
 
     char op;
@@ -388,20 +429,25 @@ void excluir_aluguel(void){
     } while (op != '1' && op != '2');
 
     do {
-        printf("\nDigite o Id do aluguel: ");
-        fgets(id, 3, stdin);
-        id[strcspn(id, "\n")] = '\0';
-    } while (!verificarnumero(id));
+        printf("\nDigite o Código do aluguel: ");
+        fgets(codigo, 3, stdin);
+        codigo[strcspn(codigo, "\n")] = '\0';
+    } while (!verificarnumero(codigo));
 
     if (op == '1') {
+        char id[3];
+        int i = 0;
         while (fread(aluguel, sizeof(Aluguel), 1, fa) == 1) {
-            if (strcmp(aluguel->id, id) != 0) {
+            if (strcmp(aluguel->codigo, codigo) != 0) {
+                i = i + 1;
+                sprintf(id, "%d", i);
+                strcpy(aluguel->id, id);
                 fwrite(aluguel, sizeof(Aluguel), 1, f);
             }
         }
     } else {
         while (fread(aluguel, sizeof(Aluguel), 1, fa) == 1) {
-            if (strcmp(aluguel->id, id) == 0) {
+            if (strcmp(aluguel->codigo, codigo) == 0) {
                 aluguel->status = '0';
             }
             fwrite(aluguel, sizeof(Aluguel), 1, f);
@@ -417,4 +463,6 @@ void excluir_aluguel(void){
     printf("\nExclusão concluída!\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
+
+    return carregar_alugueis("aluguel.dat");
 }

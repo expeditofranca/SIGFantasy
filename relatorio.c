@@ -192,10 +192,8 @@ void relatorio_funcionario(void){
 }
 
 void relatorio_produto(void){
-  FILE *fp;
-  Produto* produto;
-  fp = fopen("produto.dat", "rb");
-  produto = (Produto*) malloc(sizeof(Produto));
+  Produto* lista = carregar_produtos("produto.dat");
+  Produto* produto = NULL;
 
   printf("\n");
   printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -218,56 +216,40 @@ void relatorio_produto(void){
 
   switch(op) {
       case '1':         
-          while(fread(produto, sizeof(Produto), 1, fp)){
-            printf("Nome: %s\n", produto->nome);
-            printf("Tipo: %s\n", produto->tipo);
-            printf("Preço: %f\n", produto->preco);
-            printf("Estoque: %d\n", produto->quantidade);
-            printf("Status: %c\n", produto->status);
-            printf("Id: %s\n", produto->id);
-          }
+          lista_direta_produtos(lista);
           break;
       case '2':
           char tipo[10];
           do{
               printf("Digite o Tipo: ");
-              fgets(produto->tipo, 10, stdin);
-              produto->tipo[strcspn(produto->tipo, "\n")] = '\0';
-          }while(!verificarnome(produto->tipo));
+              fgets(tipo, 10, stdin);
+              tipo[strcspn(tipo, "\n")] = '\0';
+          }while(!verificarnome(tipo));
 
-          while(fread(produto, sizeof(Produto), 1, fp)){
-            if(strcmp(produto->tipo, tipo)){
-              printf("Nome: %s\n", produto->nome);
-              printf("Tipo: %s\n", produto->tipo);
-              printf("Preço: %f\n", produto->preco);
-              printf("Estoque: %d\n", produto->quantidade);
-              printf("Status: %c\n", produto->status);
-              printf("Id: %s\n", produto->id);
+          produto = lista;
+          while(produto != NULL){
+            if(strcmp(produto->tipo, tipo) == 0){
+              exibe_produto(produto);
             }
+            produto = produto->prox;
           }
           break;
       case '3':
-          while(fread(produto, sizeof(Produto), 1, fp)){
+          produto = lista;
+          while(produto != NULL){
             if(produto->status == '1'){
-              printf("Nome: %s\n", produto->nome);
-              printf("Tipo: %s\n", produto->tipo);
-              printf("Preço: %f\n", produto->preco);
-              printf("Estoque: %d\n", produto->quantidade);
-              printf("Status: %c\n", produto->status);
-              printf("Id: %s\n", produto->id);
+              exibe_produto(produto);
             }
+            produto = produto->prox;
           }
           break;
       case '4':
-          while(fread(produto, sizeof(Produto), 1, fp)){
+          produto = lista;
+          while(produto != NULL){
             if(produto->status == '0'){
-              printf("Nome: %s\n", produto->nome);
-              printf("Tipo: %s\n", produto->tipo);
-              printf("Preço: %f\n", produto->preco);
-              printf("Estoque: %d\n", produto->quantidade);
-              printf("Status: %c\n", produto->status);
-              printf("Id: %s\n", produto->id);
+              exibe_produto(produto);
             }
+            produto = produto->prox;
           }
           break;
   }

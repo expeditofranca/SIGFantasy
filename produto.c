@@ -71,6 +71,7 @@ void exibe_produto(Produto* produto) {
     if (produto == NULL) {
         printf("Produto não existe!\n");
     } else {
+        printf("Código: %s\n", produto->codigo);
         printf("Nome: %s\n", produto->nome);
         printf("Tipo: %s\n", produto->tipo);
         printf("Preço: %.2f\n", produto->preco);
@@ -192,6 +193,12 @@ Produto* cadastrar_produto(Produto* lista) {
     fp = fopen("produto.dat", "ab");
 
     do{
+        printf("Digite o Código: ");
+        fgets(produto->codigo, 7, stdin);
+        produto->codigo[strcspn(produto->codigo, "\n")] = '\0';
+    }while(!verificarnumero(produto->codigo));
+
+    do{
         printf("Digite o Nome: ");
         fgets(produto->nome, 25, stdin);
         produto->nome[strcspn(produto->nome, "\n")] = '\0';
@@ -248,7 +255,7 @@ Produto* pesquisar_produto(Produto* lista){
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 
-    char id[3];
+    char codigo[7];
     FILE* fp;
     fp = fopen("produto.dat", "rb");
     if (fp == NULL) {
@@ -259,14 +266,14 @@ Produto* pesquisar_produto(Produto* lista){
     Produto* produto;
     
     do{
-        printf("\nDigite o Id : ");
-        fgets(id, 3, stdin);
-        id[strcspn(id, "\n")] = '\0'; 
-    }while(!verificarnumero(id));
+        printf("\nDigite o Código: ");
+        fgets(codigo, 7, stdin);
+        codigo[strcspn(codigo, "\n")] = '\0'; 
+    }while(!verificarnumero(codigo));
 
     produto = lista;
     while (produto != NULL){
-        if (strcmp(id, produto->id) == 0) {
+        if (strcmp(produto->codigo, codigo) == 0) {
             return produto;
         } else {
             produto = produto->prox;
@@ -289,7 +296,7 @@ Produto* atualizar_produto(Produto* lista){
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     
-    char id[3];
+    char codigo[7];
     FILE *fp = fopen("produto.dat", "rb");
     if (fp == NULL) {
         printf("Erro ao abrir produto.dat\n");
@@ -313,12 +320,12 @@ Produto* atualizar_produto(Produto* lista){
 
     do {
         printf("\nDigite o Id: ");
-        fgets(id, 3, stdin);
-        id[strcspn(id, "\n")] = '\0';
-    } while (!verificarnumero(id));
+        fgets(codigo, 7, stdin);
+        codigo[strcspn(codigo, "\n")] = '\0';
+    } while (!verificarnumero(codigo));
 
     while (fread(produto, sizeof(Produto), 1, fp) == 1) {
-        if (strcmp(produto->id, id) != 0) {
+        if (strcmp(produto->codigo, codigo) != 0) {
             fwrite(produto, sizeof(Produto), 1, f);
         } else {
             char op;
@@ -377,7 +384,7 @@ Produto* excluir_produto(Produto* lista){
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     
-    char id[3];
+    char codigo[7];
     FILE *fp = fopen("produto.dat", "rb");
     if (fp == NULL) {
         printf("Erro ao abrir produto.dat\n");
@@ -407,16 +414,16 @@ Produto* excluir_produto(Produto* lista){
     } while (op != '1' && op != '2');
 
     do {
-        printf("\nDigite o Id: ");
-        fgets(id, 3, stdin);
-        id[strcspn(id, "\n")] = '\0';
-    } while (!verificarnumero(id));
+        printf("\nDigite o Código: ");
+        fgets(codigo, 7, stdin);
+        codigo[strcspn(codigo, "\n")] = '\0';
+    } while (!verificarnumero(codigo));
 
     if (op == '1') {
-        char id[3];
+        char id[3] = "";
         int i = 0;
         while (fread(produto, sizeof(Produto), 1, fp) == 1) {
-            if (strcmp(produto->id, id) != 0) {
+            if (strcmp(produto->codigo, codigo) != 0) {
                 i = i + 1;
                 sprintf(id, "%d", i);
                 strcpy(produto->id, id);
@@ -425,7 +432,7 @@ Produto* excluir_produto(Produto* lista){
         }
     } else {
         while (fread(produto, sizeof(Produto), 1, fp) == 1) {
-            if (strcmp(produto->id, id) == 0) {
+            if (strcmp(produto->codigo, codigo) == 0) {
                 produto->status = '0';
             }
             fwrite(produto, sizeof(Produto), 1, f);

@@ -156,13 +156,19 @@ int verificardata(char* data){
 
     for (int i = 0; data[i] != '\0'; i++){
         if(verificarletra(data[i]) && data[i] != '/'){
-            printf("Data inválida!");
+            printf("1");
+            printf("Data inválida!\n");
             return 0;
         }
     }
 
-    if(data[5] > '1' || data[6] > '2' || data[8] > '3' || data[9] > '1'){
-        printf("Data inválida!");
+    if(data[5] > '1' || data[6] > '2' || data[8] > '3'){
+        printf("2");
+        printf("Data inválida!\n");
+        return 0;
+    }
+
+    if(data[5] == '0' && data[6] == '2' && data[8] == '3'){
         return 0;
     }
 

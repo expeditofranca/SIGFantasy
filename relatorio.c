@@ -309,6 +309,13 @@ void relatorio_aluguel(void){
                 getchar();
             }while(!verificardata(data1));
 
+            while(aluguel != NULL){
+              if(strcmp(aluguel->dataAl, data1) < 0){
+                exibe_aluguel(aluguel);
+              }
+              aluguel = aluguel->prox;
+            }
+
           } else if(op2 == '2'){
             do{
               do{
@@ -318,6 +325,13 @@ void relatorio_aluguel(void){
                   getchar();
               }while(!verificardata(data1));
             }while(strcmp(data1, dataAtual) > 0);
+
+            while(aluguel != NULL){
+              if(strcmp(data1, aluguel->dataAl) < 0){
+                exibe_aluguel(aluguel);
+              }
+              aluguel = aluguel->prox;
+            }
 
           } else {
             do{
@@ -337,6 +351,14 @@ void relatorio_aluguel(void){
                 }while(!verificardata(data2));
               }while(strcmp(data1, data2) > 0);
             }while(strcmp(data1, dataAtual) > 0);
+
+            while(aluguel != NULL){
+              if(strcmp(data1, aluguel->dataAl) < 0 && strcmp(aluguel->dataAl, data2) < 0){
+                exibe_aluguel(aluguel);
+              }
+              aluguel = aluguel->prox;
+            }
+
           }
           break;
       case '3':

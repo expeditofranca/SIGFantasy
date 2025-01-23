@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <time.h>
 #include "funcoes.h"
 
 int verificarletra(char a){
@@ -139,13 +140,34 @@ int verificaremail(char* email){
                 } 
             }
         }
-    }if(c_arroba > 1 || c_ponto >1 || c_arroba == 0 || c_ponto == 0){
+    }
+    if(c_arroba > 1 || c_ponto >1 || c_arroba == 0 || c_ponto == 0){
         printf("Email Invalido ");
         return 0;
-    }return 1;
-
+    }
+    return 1;
 }
 
+int verificardata(char* data){
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    char dataAtual[11];
+    sprintf(dataAtual, "%04d/%02d/%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+
+    for (int i = 0; data[i] != '\0'; i++){
+        if(verificarletra(data[i]) && data[i] != '/'){
+            printf("Data inválida!");
+            return 0;
+        }
+    }
+
+    if(data[5] > '1' || data[6] > '2' || data[8] > '3' || data[9] > '1'){
+        printf("Data inválida!");
+        return 0;
+    }
+
+    return 1;
+}
 
 char* duplica(char* s) {
   int n = strlen(s) + 1;

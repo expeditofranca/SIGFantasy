@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "relatorio.h"
 #include "cliente.h"
 #include "funcionario.h"
@@ -260,18 +261,92 @@ void relatorio_produto(void){
 }
 
 void relatorio_aluguel(void){
-    system("clear||cls");
+    Aluguel* lista = carregar_alugueis("aluguel.dat");
+    Aluguel* aluguel = NULL;
+
     printf("\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("@@@                             Sis-Fantasy                                 @@@\n");
+    printf("@@@                            Sis-Fantasy                                  @@@\n");
     printf("@@@                   Developed By Expedito and Geovanne                    @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     printf("@@@                                                                         @@@\n");
-    printf("@@@                * * *  Relatório Geral de Aluguel  * * *                 @@@\n");
+    printf("@@@                  - - - - Relatórios de Alugueis - - - -                 @@@\n");
+    printf("@@@                  1 * Relatório Geral de Alugueis                        @@@\n");
+    printf("@@@                  2 * Relatório de Alugueis por Data                     @@@\n");
+    printf("@@@                  3 * Relatório de Alugueis Pagos                        @@@\n");
+    printf("@@@                  4 * Relatório de Alugueis Pendentes                    @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    printf("@@@                         Em Desenvolvilmento                             @@@\n");
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    printf("\n");
+    char op;
+    printf("Escolha uma opcao: ");
+    scanf(" %c", &op);
+    getchar();
+
+    switch(op) {
+      case '1':         
+          lista_direta_alugueis(lista);
+          break;
+      case '2':
+          aluguel = lista;
+          char data1[11], data2[11], dataAtual[11];
+          time_t t = time(NULL);
+          struct tm tm = *localtime(&t);
+          sprintf(dataAtual, "%04d/%02d/%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+          char op2;
+
+          do {
+              printf("1 - Alugueis antes da data fornecida\n2 - Alugueis após a data fornecida\n3 - Alugueis num intervalo de tempo\n");
+              scanf("%c", &op2);
+              getchar();
+          } while (op2 != '1' && op2 != '2' && op2 != '3');
+
+          if(op2 == '1'){
+            do{
+                printf("Digite a data (Ano/Mês/Dia): ");
+                fgets(data1, 11, stdin);
+                data1[strcspn(data1, "\n")] = '\0';
+                getchar();
+            }while(!verificardata(data1));
+
+          } else if(op2 == '2'){
+            do{
+              do{
+                  printf("Digite a data (Ano/Mês/Dia): ");
+                  fgets(data1, 11, stdin);
+                  data1[strcspn(data1, "\n")] = '\0';
+                  getchar();
+              }while(!verificardata(data1));
+            }while(strcmp(data1, dataAtual) > 0);
+
+          } else {
+            do{
+              do{
+                do{
+                    printf("Digite a data inicial (Ano/Mês/Dia): ");
+                    fgets(data1, 11, stdin);
+                    data1[strcspn(data1, "\n")] = '\0';
+                    getchar();
+                }while(!verificardata(data1));
+                
+                do{
+                    printf("Digite a data final (Ano/Mês/Dia): ");
+                    fgets(data2, 11, stdin);
+                    data2[strcspn(data2, "\n")] = '\0';
+                    getchar();
+                }while(!verificardata(data2));
+              }while(strcmp(data1, data2) > 0);
+            }while(strcmp(data1, dataAtual) > 0);
+          }
+          break;
+      case '3':
+          break;
+      case '4':
+          break;
+    }
+
+    
+    printf("\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
 }

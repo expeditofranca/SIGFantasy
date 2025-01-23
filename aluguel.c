@@ -244,11 +244,11 @@ Aluguel* cadastrar_aluguel(Aluguel* lista){
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     char dataAl[11];
-    sprintf(dataAl, "%02d/%02d/%04d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+    sprintf(dataAl, "%04d/%02d/%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
     strcpy(aluguel->dataAl, dataAl);
 
     char dataDev[11];
-    sprintf(dataDev, "%02d/%02d/%04d", tm.tm_mday+aluguel->qntDias, tm.tm_mon + 1, tm.tm_year + 1900);
+    sprintf(dataDev, "%02d/%02d/%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday+aluguel->qntDias);
     strcpy(aluguel->dataDev, dataDev);
 
     aluguel->status = '1';

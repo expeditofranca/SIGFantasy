@@ -5,5 +5,6 @@ int verificaremail(char*);
 int verificarnumero(char*);
 int verificarletra(char);
 int verificarpreco(char*);
+int verificardata(char*);
 char* duplica(char*);
 char* lelinha(void);

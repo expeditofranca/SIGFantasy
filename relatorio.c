@@ -289,7 +289,7 @@ void relatorio_aluguel(void){
           break;
       case '2':
           aluguel = lista;
-          char data1[11], data2[11], dataAtual[11];
+          char dataAtual[11];
           time_t t = time(NULL);
           struct tm tm = *localtime(&t);
           sprintf(dataAtual, "%04d/%02d/%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
@@ -302,63 +302,121 @@ void relatorio_aluguel(void){
           } while (op2 != '1' && op2 != '2' && op2 != '3');
 
           if(op2 == '1'){
-            do{
-                printf("Digite a data (Ano/Mês/Dia): ");
-                fgets(data1, 11, stdin);
-                data1[strcspn(data1, "\n")] = '\0';
-                getchar();
-            }while(!verificardata(data1));
+            printf("Digite a data: ");
+            char data1[11];
+            ledata(data1);
 
             while(aluguel != NULL){
               if(strcmp(aluguel->dataAl, data1) < 0){
+                Cliente* cliente = carregar_clientes("cliente.dat");
+                while (cliente != NULL){
+                    if(strcmp(aluguel->cpfC, cliente->cpf) == 0){
+                        printf("Nome do Cliente: %s\n", cliente->nome);
+                        break;
+                    }
+                    cliente = cliente->prox;
+                }
+                Funcionario* funcionario = carregar_funcionarios("funcionario.dat");
+                while (funcionario != NULL){
+                    if(strcmp(aluguel->cpfF, funcionario->cpf) == 0){
+                        printf("Nome do Funcionário: %s\n", funcionario->nome);
+                        break;
+                    }
+                    funcionario = funcionario->prox;
+                }
+                Produto* produto = carregar_produtos("produto.dat");
+                while (produto != NULL){
+                    if(strcmp(aluguel->codProd, produto->codigo) == 0){
+                        printf("Nome do Produto: %s\n", produto->nome);
+                        break;
+                    }
+                    produto = produto->prox;
+                }
                 exibe_aluguel(aluguel);
               }
               aluguel = aluguel->prox;
             }
 
           } else if(op2 == '2'){
+            printf("Digite a data: ");
+            char data1[11];
             do{
-              do{
-                  printf("Digite a data (Ano/Mês/Dia): ");
-                  fgets(data1, 11, stdin);
-                  data1[strcspn(data1, "\n")] = '\0';
-                  getchar();
-              }while(!verificardata(data1));
+              ledata(data1);
             }while(strcmp(data1, dataAtual) > 0);
 
             while(aluguel != NULL){
               if(strcmp(data1, aluguel->dataAl) < 0){
+                Cliente* cliente = carregar_clientes("cliente.dat");
+                while (cliente != NULL){
+                    if(strcmp(aluguel->cpfC, cliente->cpf) == 0){
+                        printf("Nome do Cliente: %s\n", cliente->nome);
+                        break;
+                    }
+                    cliente = cliente->prox;
+                }
+                Funcionario* funcionario = carregar_funcionarios("funcionario.dat");
+                while (funcionario != NULL){
+                    if(strcmp(aluguel->cpfF, funcionario->cpf) == 0){
+                        printf("Nome do Funcionário: %s\n", funcionario->nome);
+                        break;
+                    }
+                    funcionario = funcionario->prox;
+                }
+                Produto* produto = carregar_produtos("produto.dat");
+                while (produto != NULL){
+                    if(strcmp(aluguel->codProd, produto->codigo) == 0){
+                        printf("Nome do Produto: %s\n", produto->nome);
+                        break;
+                    }
+                    produto = produto->prox;
+                }
                 exibe_aluguel(aluguel);
               }
               aluguel = aluguel->prox;
             }
 
           } else {
+            char data1[11], data2[11];
             do{
               do{
-                do{
-                    printf("Digite a data inicial (Ano/Mês/Dia): ");
-                    fgets(data1, 11, stdin);
-                    data1[strcspn(data1, "\n")] = '\0';
-                    getchar();
-                }while(!verificardata(data1));
-                
-                do{
-                    printf("Digite a data final (Ano/Mês/Dia): ");
-                    fgets(data2, 11, stdin);
-                    data2[strcspn(data2, "\n")] = '\0';
-                    getchar();
-                }while(!verificardata(data2));
+                printf("Digite a data inicial: ");
+                ledata(data1);
+
+                printf("Digite a data final: ");
+                ledata(data2);
               }while(strcmp(data1, data2) > 0);
             }while(strcmp(data1, dataAtual) > 0);
 
             while(aluguel != NULL){
               if(strcmp(data1, aluguel->dataAl) < 0 && strcmp(aluguel->dataAl, data2) < 0){
+                Cliente* cliente = carregar_clientes("cliente.dat");
+                while (cliente != NULL){
+                    if(strcmp(aluguel->cpfC, cliente->cpf) == 0){
+                        printf("Nome do Cliente: %s\n", cliente->nome);
+                        break;
+                    }
+                    cliente = cliente->prox;
+                }
+                Funcionario* funcionario = carregar_funcionarios("funcionario.dat");
+                while (funcionario != NULL){
+                    if(strcmp(aluguel->cpfF, funcionario->cpf) == 0){
+                        printf("Nome do Funcionário: %s\n", funcionario->nome);
+                        break;
+                    }
+                    funcionario = funcionario->prox;
+                }
+                Produto* produto = carregar_produtos("produto.dat");
+                while (produto != NULL){
+                    if(strcmp(aluguel->codProd, produto->codigo) == 0){
+                        printf("Nome do Produto: %s\n", produto->nome);
+                        break;
+                    }
+                    produto = produto->prox;
+                }
                 exibe_aluguel(aluguel);
               }
               aluguel = aluguel->prox;
             }
-
           }
           break;
       case '3':
@@ -370,4 +428,29 @@ void relatorio_aluguel(void){
     printf("\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();
+}
+
+void ledata(char* data){
+  char dia[3], mes[3], ano[5];
+  do{
+    do{
+        printf("Dia: ");
+        fgets(dia, 3, stdin);
+        mes[strcspn(mes, "\n")] = '\0';
+        getchar();
+    }while(!verificarnumero(dia));
+    do{
+        printf("Mês: ");
+        fgets(mes, 3, stdin);
+        mes[strcspn(mes, "\n")] = '\0';
+        getchar();
+    }while(!verificarnumero(mes));
+    do{
+        printf("Ano: ");
+        fgets(ano, 5, stdin);
+        ano[strcspn(ano, "\n")] = '\0';
+        getchar();
+    }while(!verificarnumero(ano));
+    sprintf(data, "%s/%s/%s", ano, mes, dia);
+  }while(!verificardata(data));
 }

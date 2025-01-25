@@ -149,19 +149,6 @@ int verificaremail(char* email){
 }
 
 int verificardata(char* data){
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-    char dataAtual[11];
-    sprintf(dataAtual, "%04d/%02d/%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
-
-    for (int i = 0; data[i] != '\0'; i++){
-        if(verificarletra(data[i]) && data[i] != '/'){
-            printf("1");
-            printf("Data inválida!\n");
-            return 0;
-        }
-    }
-
     if(data[5] > '1' || data[6] > '2' || data[8] > '3'){
         printf("2");
         printf("Data inválida!\n");
@@ -169,6 +156,7 @@ int verificardata(char* data){
     }
 
     if(data[5] == '0' && data[6] == '2' && data[8] == '3'){
+        printf("Data inválida!\n");
         return 0;
     }
 

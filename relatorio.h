@@ -4,3 +4,4 @@ void relatorio_cliente(void);
 void relatorio_funcionario(void);
 void relatorio_produto(void);
 void relatorio_aluguel(void);
+void ledata(char*);

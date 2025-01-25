@@ -77,7 +77,6 @@ void exibe_produto(Produto* produto) {
         printf("Preço: %.2f\n", produto->preco);
         printf("Quantidade: %d\n", produto->quantidade);
         printf("Status: %c\n", produto->status);
-        printf("Id: %s\n", produto->id);
         printf("\n");
     }
 }
@@ -169,10 +168,7 @@ Produto* cadastrar_produto(Produto* lista) {
     printf("@@@                                                                         @@@\n");
     printf("@@@                    * * *  CADASTRAR PRODUTO   * * *                     @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    int i = 0;
-    char id[3] = "";
-    FILE* fp;
-    fp = fopen("produto.dat", "rb");
+    FILE* fp = fopen("produto.dat", "ab");
     if (fp == NULL) {
         printf("Erro ao abrir produto.dat\n");
         return lista;
@@ -184,14 +180,7 @@ Produto* cadastrar_produto(Produto* lista) {
         fclose(fp);
         return lista;
     }
-
-    while(fread(produto, sizeof(Produto), 1, fp) == 1){
-        i++;
-    }
-    fclose(fp);
-
-    fp = fopen("produto.dat", "ab");
-
+    
     do{
         printf("Digite o Código: ");
         fgets(produto->codigo, 7, stdin);
@@ -227,9 +216,6 @@ Produto* cadastrar_produto(Produto* lista) {
     produto->quantidade = atoi(qntd);
 
     produto->status = '1';
-    sprintf(id, "%d", i + 1);
-    strcpy(produto->id, id);
-
     produto->prox = NULL;
 
     fwrite(produto, sizeof(Produto), 1, fp);
@@ -319,7 +305,7 @@ Produto* atualizar_produto(Produto* lista){
     }
 
     do {
-        printf("\nDigite o Id: ");
+        printf("\nDigite o Código: ");
         fgets(codigo, 7, stdin);
         codigo[strcspn(codigo, "\n")] = '\0';
     } while (!verificarnumero(codigo));
@@ -420,13 +406,8 @@ Produto* excluir_produto(Produto* lista){
     } while (!verificarnumero(codigo));
 
     if (op == '1') {
-        char id[3] = "";
-        int i = 0;
         while (fread(produto, sizeof(Produto), 1, fp) == 1) {
             if (strcmp(produto->codigo, codigo) != 0) {
-                i = i + 1;
-                sprintf(id, "%d", i);
-                strcpy(produto->id, id);
                 fwrite(produto, sizeof(Produto), 1, f);
             }
         }

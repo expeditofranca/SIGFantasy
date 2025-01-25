@@ -367,7 +367,6 @@ void relatorio_aluguel(void){
           break;
     }
 
-    
     printf("\n");
     printf(">>> Tecle <ENTER> para continuar...\n");
     getchar();

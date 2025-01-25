@@ -78,7 +78,6 @@ void exibe_cliente(Cliente* cliente) {
         printf("Cidade:%s, Bairro:%s, Rua:%s\n", cliente->cidade, cliente->bairro, cliente->rua);
         printf("Telefone: %s\n", cliente->fone);
         printf("Status: %c\n", cliente->status);
-        printf("Id: %s\n", cliente->id);
         printf("\n");
     }
 }
@@ -173,9 +172,7 @@ Cliente* cadastrar_cliente(Cliente* lista) {
     printf("@@@                    * * *  CADASTRAR CLIENTE   * * *                     @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    int i = 0;
-    char id[3] = "";
-    FILE *fp = fopen("cliente.dat", "rb");
+    FILE *fp = fopen("cliente.dat", "ab");
     if (fp == NULL) {
         printf("Erro ao abrir cliente.dat\n");
         return lista;
@@ -187,13 +184,6 @@ Cliente* cadastrar_cliente(Cliente* lista) {
         fclose(fp);
         return lista;
     }
-
-    while(fread(cliente, sizeof(Cliente), 1, fp) == 1){
-        i++;
-    }
-    fclose(fp);
-
-    fp = fopen("cliente.dat", "ab");
 
     do{
         printf("\nDigite o CPF : ");
@@ -234,10 +224,6 @@ Cliente* cadastrar_cliente(Cliente* lista) {
     printf("\nDigite a rua e número: ");
     fgets(cliente->rua, 50, stdin);
     cliente->rua[strcspn(cliente->rua, "\n")] = '\0';
-
-    cliente->status = '1';
-    sprintf(id, "%d", i + 1);
-    strcpy(cliente->id, id);
 
     cliente->prox = NULL;
 
@@ -430,13 +416,9 @@ Cliente* excluir_cliente(Cliente* lista) {
     } while (!verificarCPF(cpf));
 
     if (op == '1') {
-        char id[3] = "";
-        int i = 0;
         while (fread(cliente, sizeof(Cliente), 1, fp) == 1) {
             if (strcmp(cliente->cpf, cpf) != 0) {
-                i = i + 1;
-                sprintf(id, "%d", i);
-                strcpy(cliente->id, id);
+                
                 fwrite(cliente, sizeof(Cliente), 1, f);
             }
         }

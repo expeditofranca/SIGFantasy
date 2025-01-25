@@ -76,14 +76,10 @@ void exibe_aluguel(Aluguel* aluguel) {
     if (aluguel == NULL) {
         printf("Aluguel não existe!\n");
     } else {
-        printf("Nome do Cliente: %s\n", aluguel->nomeC);
-        printf("Nome do Funcionário: %s\n", aluguel->nomeF);
-        printf("Nome do Produto: %s\n", aluguel->nomeP);
         printf("Data do aluguel: %s\n", aluguel->dataAl);
         printf("Data de devolução: %s\n", aluguel->dataDev);
         printf("Valor do aluguel: %.2f\n", aluguel->valor);
         printf("Status: %c\n", aluguel->status);
-        printf("Id: %s\n", aluguel->id);
         printf("\n");
     }
 }
@@ -178,9 +174,8 @@ Aluguel* cadastrar_aluguel(Aluguel* lista){
     printf("@@@                     * * *  Cadastrar Aluguel  * * *                     @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    char id[3] = "";
     FILE* fa; 
-    fa = fopen("aluguel.dat", "rb");
+    fa = fopen("aluguel.dat", "ab");
     if (fa == NULL) {
         printf("Erro ao abrir aluguel.dat\n");
         return lista;
@@ -189,16 +184,6 @@ Aluguel* cadastrar_aluguel(Aluguel* lista){
     if (aluguel == NULL) {
         printf("Erro ao alocar memória para aluguel\n");
         fclose(fa);
-        return lista;
-    }
-    int i = 0;
-    while (fread(aluguel, sizeof(Aluguel), 1, fa)){
-        i = i + 1;
-    }
-    fclose(fa);
-    fa = fopen("aluguel.dat", "ab");
-    if (fa == NULL) {
-        printf("Erro ao abrir aluguel.dat\n");
         return lista;
     }
 
@@ -214,7 +199,6 @@ Aluguel* cadastrar_aluguel(Aluguel* lista){
         return lista;
     }
     strcpy(aluguel->cpfC, cliente->cpf);
-    strcpy(aluguel->nomeC, cliente->nome);
 
     Funcionario *funcionario = pesquisar_funcionario(carregar_funcionarios("funcionario.dat"));
     if(funcionario == NULL){
@@ -222,7 +206,6 @@ Aluguel* cadastrar_aluguel(Aluguel* lista){
         return lista;
     }
     strcpy(aluguel->cpfF, funcionario->cpf);
-    strcpy(aluguel->nomeF, funcionario->nome);
 
     Produto *produto = pesquisar_produto(carregar_produtos("produto.dat"));
     if(cliente == NULL){
@@ -230,7 +213,6 @@ Aluguel* cadastrar_aluguel(Aluguel* lista){
         return lista;
     }
     strcpy(aluguel->codProd, produto->codigo);
-    strcpy(aluguel->nomeP, produto->nome);
 
     char qntDias[3] = "";
     do{
@@ -248,13 +230,10 @@ Aluguel* cadastrar_aluguel(Aluguel* lista){
     strcpy(aluguel->dataAl, dataAl);
 
     char dataDev[11];
-    sprintf(dataDev, "%02d/%02d/%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday+aluguel->qntDias);
+    sprintf(dataDev, "%04d/%02d/%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday+aluguel->qntDias);
     strcpy(aluguel->dataDev, dataDev);
 
     aluguel->status = '1';
-    sprintf(id, "%d", i + 1);
-    strcpy(aluguel->id, id);
-
     aluguel->prox = NULL;
 
     fwrite(aluguel, sizeof(Aluguel), 1, fa);
@@ -297,6 +276,30 @@ Aluguel* pesquisar_aluguel(Aluguel* lista){
     aluguel = lista;
     while (aluguel != NULL){
         if (strcmp(aluguel->codigo, codigo) == 0) {
+            Cliente* cliente = carregar_clientes("cliente.dat");
+            while (cliente != NULL){
+                if(strcmp(aluguel->cpfC, cliente->cpf) == 0){
+                    printf("Nome do Cliente: %s\n", cliente->nome);
+                    break;
+                }
+                cliente = cliente->prox;
+            }
+            Funcionario* funcionario = carregar_funcionarios("funcionario.dat");
+            while (funcionario != NULL){
+                if(strcmp(aluguel->cpfF, funcionario->cpf) == 0){
+                    printf("Nome do Funcionário: %s\n", funcionario->nome);
+                    break;
+                }
+                funcionario = funcionario->prox;
+            }
+            Produto* produto = carregar_produtos("produto.dat");
+            while (produto != NULL){
+                if(strcmp(aluguel->codProd, produto->codigo) == 0){
+                    printf("Nome do Produto: %s\n", produto->nome);
+                    break;
+                }
+                produto = produto->prox;
+            }
             return aluguel;
         } else {
             aluguel = aluguel->prox;
@@ -435,13 +438,8 @@ Aluguel* excluir_aluguel(Aluguel* lista){
     } while (!verificarnumero(codigo));
 
     if (op == '1') {
-        char id[3];
-        int i = 0;
         while (fread(aluguel, sizeof(Aluguel), 1, fa) == 1) {
             if (strcmp(aluguel->codigo, codigo) != 0) {
-                i = i + 1;
-                sprintf(id, "%d", i);
-                strcpy(aluguel->id, id);
                 fwrite(aluguel, sizeof(Aluguel), 1, f);
             }
         }

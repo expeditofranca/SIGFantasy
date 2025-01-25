@@ -3,7 +3,7 @@ typedef struct produto Produto;
 
 struct produto
 {
-    char id[3], nome[25], tipo[20], codigo[7], status;
+    char nome[25], tipo[20], codigo[7], status;
     float preco;
     int quantidade;
     Produto* prox;

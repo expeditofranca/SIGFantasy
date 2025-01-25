@@ -78,7 +78,6 @@ void exibe_funcionario(Funcionario* funcionario) {
         printf("Cargo: %s\n", funcionario->cargo);
         printf("Telefone: %s\n", funcionario->fone);
         printf("Status: %c\n", funcionario->status);
-        printf("Id: %s\n", funcionario->id);
         printf("\n");
     }
 }
@@ -173,9 +172,7 @@ Funcionario* cadastrar_funcionario(Funcionario* lista) {
     printf("@@@                  * * *  CADASTRAR FUNCIONARIO   * * *                   @@@\n");
     printf("@@@                                                                         @@@\n");
     printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    int i = 0;
-    char id[3] = "";
-    FILE *fp = fopen("funcionario.dat", "rb");
+    FILE *fp = fopen("funcionario.dat", "ab");
     if (fp == NULL) {
         printf("Erro ao abrir funcionario.dat\n");
         return lista;
@@ -187,13 +184,6 @@ Funcionario* cadastrar_funcionario(Funcionario* lista) {
         fclose(fp);
         return lista;
     }
-
-    while(fread(funcionario, sizeof(Funcionario), 1, fp) == 1 ){
-        i++;
-    }
-    fclose(fp);
-
-    fp = fopen("funcionario.dat", "ab");
 
     do{
         printf("\nDigite o CPF do Funcionario: ");
@@ -226,9 +216,6 @@ Funcionario* cadastrar_funcionario(Funcionario* lista) {
     }while(!verificaremail(funcionario->email));
 
     funcionario->status = '1';
-    sprintf(id, "%d", i + 1);
-    strcpy(funcionario->id, id);
-
     funcionario->prox = NULL;
 
     fwrite(funcionario, sizeof(Funcionario), 1, fp);
@@ -430,13 +417,8 @@ Funcionario* excluir_funcionario(Funcionario* lista){
     } while (!verificarCPF(cpf));
 
     if (op == '1') {
-        char id[3] = "";
-        int i = 0;
         while (fread(funcionario, sizeof(Funcionario), 1, fp) == 1) {
             if (strcmp(funcionario->cpf, cpf) != 0) {
-                i = i + 1;
-                sprintf(id, "%d", i);
-                strcpy(funcionario->id, id);
                 fwrite(funcionario, sizeof(Funcionario), 1, f);
             }
         }

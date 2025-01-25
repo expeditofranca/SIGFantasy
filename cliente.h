@@ -3,7 +3,7 @@ typedef struct cliente Cliente;
 
 struct cliente
 {
-    char cpf[15], nome[50], fone[19], email[50], cidade[25], bairro[25], rua[50], status, id[3];
+    char cpf[15], nome[50], fone[15], email[50], cidade[25], bairro[25], rua[50], status;
     Cliente* prox;
 };
 

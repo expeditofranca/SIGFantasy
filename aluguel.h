@@ -3,7 +3,7 @@ typedef struct aluguel Aluguel;
 
 struct aluguel
 {
-    char codigo[7], cpfC[12], nomeC[50], cpfF[12], nomeF[50], codProd[7], nomeP[25], dataAl[11], dataDev[11], status, id[3];
+    char codigo[7], cpfC[12], cpfF[12], codProd[7], dataAl[11], dataDev[11], status;
     int qntDias;
     float valor;
     Aluguel* prox;

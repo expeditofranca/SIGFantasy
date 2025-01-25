@@ -431,4 +431,21 @@ Produto* excluir_produto(Produto* lista){
     getchar();
 
     return carregar_produtos("produto.dat");
-}  
+}
+
+void atualiza_estoque(Produto* produto){
+    FILE* fp = fopen("temp.dat", "wb");
+    Produto* lista = carregar_produtos("produto.dat");
+
+    while (lista != NULL){
+        if(strcmp(lista->codigo, produto->codigo) == 0){
+            produto->quantidade = produto->quantidade - 1;
+        }
+        fwrite(produto, sizeof(Produto), 1, fp);
+        lista = lista->prox;
+    }
+    
+    fclose(fp);
+    remove("produto.dat");
+    rename("temp.dat", "produto.dat");
+}

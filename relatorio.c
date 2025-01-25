@@ -238,7 +238,7 @@ void relatorio_produto(void){
       case '3':
           produto = lista;
           while(produto != NULL){
-            if(produto->status == '1'){
+            if(produto->quantidade > 0){
               exibe_produto(produto);
             }
             produto = produto->prox;
@@ -247,7 +247,7 @@ void relatorio_produto(void){
       case '4':
           produto = lista;
           while(produto != NULL){
-            if(produto->status == '0'){
+            if(produto->quantidade == 0){
               exibe_produto(produto);
             }
             produto = produto->prox;

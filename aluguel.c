@@ -196,6 +196,7 @@ Aluguel* cadastrar_aluguel(Aluguel* lista){
     Cliente *cliente = pesquisar_cliente(carregar_clientes("cliente.dat"));
     if(cliente == NULL){
         printf("Cliente não encontrado!");
+        fclose(fa);
         return lista;
     }
     strcpy(aluguel->cpfC, cliente->cpf);
@@ -203,16 +204,24 @@ Aluguel* cadastrar_aluguel(Aluguel* lista){
     Funcionario *funcionario = pesquisar_funcionario(carregar_funcionarios("funcionario.dat"));
     if(funcionario == NULL){
         printf("Funcionário não encontrado!");
+        fclose(fa);
         return lista;
     }
     strcpy(aluguel->cpfF, funcionario->cpf);
 
     Produto *produto = pesquisar_produto(carregar_produtos("produto.dat"));
-    if(cliente == NULL){
+    if(produto == NULL){
         printf("Produto não encontrado!");
+        fclose(fa);
+        return lista;
+    }
+    if(produto->quantidade == 0){
+        printf("Produto em falta!");
+        fclose(fa);
         return lista;
     }
     strcpy(aluguel->codProd, produto->codigo);
+    atualiza_estoque(produto);
 
     char qntDias[3] = "";
     do{

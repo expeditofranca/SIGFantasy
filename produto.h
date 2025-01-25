@@ -21,3 +21,4 @@ void lista_produtos(Produto*);
 void lista_direta_produtos(Produto*);
 void lista_inversa_produtos(Produto*);
 void exibe_produto(Produto*);
+void atualiza_estoque(Produto*);

@@ -308,30 +308,7 @@ void relatorio_aluguel(void){
 
             while(aluguel != NULL){
               if(strcmp(aluguel->dataAl, data1) < 0){
-                Cliente* cliente = carregar_clientes("cliente.dat");
-                while (cliente != NULL){
-                    if(strcmp(aluguel->cpfC, cliente->cpf) == 0){
-                        printf("Nome do Cliente: %s\n", cliente->nome);
-                        break;
-                    }
-                    cliente = cliente->prox;
-                }
-                Funcionario* funcionario = carregar_funcionarios("funcionario.dat");
-                while (funcionario != NULL){
-                    if(strcmp(aluguel->cpfF, funcionario->cpf) == 0){
-                        printf("Nome do Funcionário: %s\n", funcionario->nome);
-                        break;
-                    }
-                    funcionario = funcionario->prox;
-                }
-                Produto* produto = carregar_produtos("produto.dat");
-                while (produto != NULL){
-                    if(strcmp(aluguel->codProd, produto->codigo) == 0){
-                        printf("Nome do Produto: %s\n", produto->nome);
-                        break;
-                    }
-                    produto = produto->prox;
-                }
+                exibe_nome(aluguel->cpfC, aluguel->cpfF, aluguel->codProd);
                 exibe_aluguel(aluguel);
               }
               aluguel = aluguel->prox;
@@ -346,30 +323,7 @@ void relatorio_aluguel(void){
 
             while(aluguel != NULL){
               if(strcmp(data1, aluguel->dataAl) < 0){
-                Cliente* cliente = carregar_clientes("cliente.dat");
-                while (cliente != NULL){
-                    if(strcmp(aluguel->cpfC, cliente->cpf) == 0){
-                        printf("Nome do Cliente: %s\n", cliente->nome);
-                        break;
-                    }
-                    cliente = cliente->prox;
-                }
-                Funcionario* funcionario = carregar_funcionarios("funcionario.dat");
-                while (funcionario != NULL){
-                    if(strcmp(aluguel->cpfF, funcionario->cpf) == 0){
-                        printf("Nome do Funcionário: %s\n", funcionario->nome);
-                        break;
-                    }
-                    funcionario = funcionario->prox;
-                }
-                Produto* produto = carregar_produtos("produto.dat");
-                while (produto != NULL){
-                    if(strcmp(aluguel->codProd, produto->codigo) == 0){
-                        printf("Nome do Produto: %s\n", produto->nome);
-                        break;
-                    }
-                    produto = produto->prox;
-                }
+                exibe_nome(aluguel->cpfC, aluguel->cpfF, aluguel->codProd);
                 exibe_aluguel(aluguel);
               }
               aluguel = aluguel->prox;
@@ -389,30 +343,7 @@ void relatorio_aluguel(void){
 
             while(aluguel != NULL){
               if(strcmp(data1, aluguel->dataAl) < 0 && strcmp(aluguel->dataAl, data2) < 0){
-                Cliente* cliente = carregar_clientes("cliente.dat");
-                while (cliente != NULL){
-                    if(strcmp(aluguel->cpfC, cliente->cpf) == 0){
-                        printf("Nome do Cliente: %s\n", cliente->nome);
-                        break;
-                    }
-                    cliente = cliente->prox;
-                }
-                Funcionario* funcionario = carregar_funcionarios("funcionario.dat");
-                while (funcionario != NULL){
-                    if(strcmp(aluguel->cpfF, funcionario->cpf) == 0){
-                        printf("Nome do Funcionário: %s\n", funcionario->nome);
-                        break;
-                    }
-                    funcionario = funcionario->prox;
-                }
-                Produto* produto = carregar_produtos("produto.dat");
-                while (produto != NULL){
-                    if(strcmp(aluguel->codProd, produto->codigo) == 0){
-                        printf("Nome do Produto: %s\n", produto->nome);
-                        break;
-                    }
-                    produto = produto->prox;
-                }
+                exibe_nome(aluguel->cpfC, aluguel->cpfF, aluguel->codProd);
                 exibe_aluguel(aluguel);
               }
               aluguel = aluguel->prox;

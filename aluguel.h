@@ -21,3 +21,4 @@ void lista_alugueis(Aluguel*);
 void lista_direta_alugueis(Aluguel*);
 void lista_inversa_alugueis(Aluguel*);
 void exibe_aluguel(Aluguel*);
+void exibe_nome(char*, char*, char*);
